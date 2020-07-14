@@ -1,0 +1,35 @@
+﻿@model ToDo.Web.Models.Do.DoIndexModel
+@using ToDo.Web.Helpers
+
+@{
+    ViewData["Title"] = "Главная";
+}
+
+<div class="body-content">
+    @foreach (var item in Model.ToDoList)
+    {
+        <ul class="doUl">
+            <li>
+                <span class="doCaret">@item.Title</span>
+                @foreach (var sub in item.SubTasks)
+                {
+                    <ul class="doUlNested">
+                        @sub.Title
+                    </ul>
+                }
+            </li>
+        </ul>
+    }
+</div>
+
+<script>
+    var toggler = document.getElementsByClassName("doCaret");
+    var i;
+
+    for (i = 0; i < toggler.length; i++) {
+        toggler[i].addEventListener("click", function () {
+            this.parentElement.querySelector(".doUlNested").classList.toggle("doUlActive");
+            this.classList.toggle("doCaret-down");
+        });
+    }
+</script>

@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDo.Data", "ToDo.Data\ToDo.Data.csproj", "{1840348C-7401-4C64-B9B3-15F7734BCB3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDo.Services", "ToDo.Services\ToDo.Services.csproj", "{A61D1388-AF38-4310-A881-5FD8A64C6F60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDo.Web", "ToDo.Web\ToDo.Web.csproj", "{3B4C27BE-7167-490B-99CF-B6713A1FD70B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1840348C-7401-4C64-B9B3-15F7734BCB3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1840348C-7401-4C64-B9B3-15F7734BCB3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1840348C-7401-4C64-B9B3-15F7734BCB3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1840348C-7401-4C64-B9B3-15F7734BCB3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A61D1388-AF38-4310-A881-5FD8A64C6F60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A61D1388-AF38-4310-A881-5FD8A64C6F60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A61D1388-AF38-4310-A881-5FD8A64C6F60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A61D1388-AF38-4310-A881-5FD8A64C6F60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B4C27BE-7167-490B-99CF-B6713A1FD70B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B4C27BE-7167-490B-99CF-B6713A1FD70B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B4C27BE-7167-490B-99CF-B6713A1FD70B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B4C27BE-7167-490B-99CF-B6713A1FD70B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FBA2CD22-2719-4869-AC34-C0E839FA7DF9}
+	EndGlobalSection
+EndGlobal
