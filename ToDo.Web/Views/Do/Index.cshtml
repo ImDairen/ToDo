@@ -5,22 +5,20 @@
     ViewData["Title"] = "Главная";
 }
 
-<div class="body-content">
-    @foreach (var item in Model.ToDoList)
-    {
-        <ul class="doUl">
-            <li>
-                <span class="doCaret">@item.Title</span>
-                @foreach (var sub in item.SubTasks)
-                {
-                    <ul class="doUlNested">
-                        @sub.Title
-                    </ul>
-                }
-            </li>
-        </ul>
-    }
-</div>
+@foreach (var item in Model.ToDoList)
+{
+    <div class="row">
+        <div class="column side">
+            <h2>@item.Title</h2>
+        </div>
+
+        <div class="column middle">
+            <p>@item.Description</p>
+        </div>
+    </div>
+}
+
+
 
 <script>
     var toggler = document.getElementsByClassName("doCaret");

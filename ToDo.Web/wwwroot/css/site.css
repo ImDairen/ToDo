@@ -5,6 +5,24 @@
     padding: 20px;
 }
 
+.heading-image {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("../images/header.png");
+    padding: 4%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.heading-text {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
 /*Navbar*/
 .nav {
     overflow: hidden;
@@ -25,9 +43,15 @@
     color: black;
 }
 
+.nav.active {
+    background-color: #ddd;
+    color: black;
+}
+
 /*Content*/
 .column {
     float: left;
+    padding-top: 3%
 }
 
 .column.side {
