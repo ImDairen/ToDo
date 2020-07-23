@@ -32,6 +32,7 @@ namespace ToDo.Services
         {
             var entity = _context.ToDoes
                 .Where(d => d.Id == id)
+                .Include(d => d.SubTasks)
                 .First();
 
             if (entity == null)

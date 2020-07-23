@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
@@ -24,13 +26,38 @@ namespace ToDo.Web.Controllers
 
         public IActionResult Index()
         {
-            var toDoes = _toDoService.GetAll()
-                .Where(x => x.SubTasks.Count != 0)
+            var subTasks = _toDoService.GetAll()
+                .Select(x => x.SubTasks).SelectMany(x => x).ToList().Distinct();
+
+            var model = _toDoService.GetAll()
+                .Where(x => !subTasks.Any(sub => sub.Id == x.Id))
                 .Select(x => new DoListingModel(x));
 
-            var model = new DoIndexModel(toDoes);
-
             return View(model);
+        }
+
+        public JsonResult GetDescription(string jsonInput)
+        {
+            string description = _toDoService.GetById(int.Parse(jsonInput)).Description;
+
+            if (description != null)
+            {
+                return Json(description);
+            }
+            else
+                return Json("This task has no description");
+        }
+
+        public JsonResult ExpandItem(int id)
+        {
+            var item = _toDoService.GetById(id);
+
+            if (item != null && item.SubTasks != null)
+            {
+                return Json(item.SubTasks);
+            }
+
+            return Json("");
         }
     }
 }

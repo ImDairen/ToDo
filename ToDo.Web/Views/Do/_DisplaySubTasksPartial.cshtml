@@ -1,0 +1,23 @@
+﻿@model IEnumerable<ToDo.Web.Models.Do.DoListingModel>
+@using ToDo.Web.Helpers
+
+    <ul class="toDoSubTasks nested">
+        @foreach (var item in Model)
+        {
+            @if (item.SubTasks.Count() > 0)
+            {
+                <li class="toDoItemSubTask">
+                    <input class="toDoSubTaskId" type="hidden" value="@item.Id" />
+                    <i class="toDoArrow"></i>
+                    @item.Title
+                </li>
+            }
+            else
+            {
+                <li class="toDoItemSubTask">
+                    <input class="toDoSubTaskId" type="hidden" value="@item.Id" />
+                    @item.Title
+                </li>
+            }
+        }
+    </ul>

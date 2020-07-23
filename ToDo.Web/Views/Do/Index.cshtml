@@ -1,33 +1,49 @@
-﻿@model ToDo.Web.Models.Do.DoIndexModel
+﻿@model IEnumerable<ToDo.Web.Models.Do.DoListingModel>
 @using ToDo.Web.Helpers
 
 @{
     ViewData["Title"] = "Главная";
 }
 
-@foreach (var item in Model.ToDoList)
-{
-    <div class="row">
-        <div class="column side">
-            <h2>@item.Title</h2>
-        </div>
-
-        <div class="column middle">
-            <p>@item.Description</p>
-        </div>
+    <div class="column side">
+        @await Html.PartialAsync("_DisplayTasksPartial")
     </div>
+    
+    <div class="column middle">
+        <p class="toDoItemDescription"></p>
+    </div>
+
+
+
+@section Scripts {
+    <script type="text/javascript">
+
+        var toDoItems = document.getElementsByClassName("toDoItem")
+        Array.from(toDoItems).forEach(toDo => toDo.addEventListener("click", async function ajaxDescription() {
+            jsonInput = toDo.parentElement.querySelector(".toDoItemId").getAttribute("value")
+            $.ajax({
+                type: "GET",
+                url: "Do/GetDescription",
+                dataType: "json",
+                data: {
+                    jsonInput
+                },
+                success: function (data) {
+                    $('.toDoItemDescription').empty()
+                    $('.toDoItemDescription').append(data)
+                }
+            })
+        }))
+
+        var toDoArrows = document.getElementsByClassName("toDoArrow")
+        Array.from(toDoArrows).forEach(arrow => arrow.addEventListener("click", async function GetSubTasks() {
+            arrow.parentElement.querySelector(".nested").classList.toggle("active")
+            if (arrow.classList.contains("expand")) {
+                arrow.classList.remove("expand")
+            }
+            else {
+                arrow.classList.add("expand")
+            }
+        }))
+    </script>
 }
-
-
-
-<script>
-    var toggler = document.getElementsByClassName("doCaret");
-    var i;
-
-    for (i = 0; i < toggler.length; i++) {
-        toggler[i].addEventListener("click", function () {
-            this.parentElement.querySelector(".doUlNested").classList.toggle("doUlActive");
-            this.classList.toggle("doCaret-down");
-        });
-    }
-</script>

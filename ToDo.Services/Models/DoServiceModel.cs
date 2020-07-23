@@ -65,7 +65,7 @@ namespace ToDo.Services.Models
         }
 
 
-        public virtual List<DoServiceModel> SubTasks { get; set; }
+        public virtual IEnumerable<DoServiceModel> SubTasks { get; set; }
 
         public DoServiceModel(Do entity)
         {
