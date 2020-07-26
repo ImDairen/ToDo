@@ -1,94 +1,125 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ToDo.Data;
-using ToDo.Data.Models;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using ToDo.Data.Interfaces;
+using ToDo.Data.Models.Static;
 using ToDo.Services.Interfaces;
 using ToDo.Services.Models;
+using System.Linq;
+using ToDo.Data.Models;
+using System;
 
 namespace ToDo.Services
 {
     public class DoService : IDoService
     {
-        private readonly ApplicationDbContext _context;
+        IUnitOfWork Data { get; set; }
 
-        public DoService(ApplicationDbContext context)
+        public DoService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            Data = unitOfWork;
         }
 
-        #region Work with database
-        public IEnumerable<DoServiceModel> GetAll()
+        public DoServiceModel GetDo(int id)
         {
-            return _context.ToDoes
-                .Include(d => d.SubTasks)
-                .Select(d => new DoServiceModel(d));
+            var item = Data.ToDoes.Get(id);
 
+            if (item == null)
+                throw new ValidationException("Задача не найдена");
+
+            return new DoServiceModel(item);
         }
 
-        public DoServiceModel GetById(int id)
+        public void CreateDo(DoServiceModel model)
         {
-            var entity = _context.ToDoes
-                .Where(d => d.Id == id)
-                .Include(d => d.SubTasks)
-                .First();
-
-            if (entity == null)
-                return null;
-
-            return new DoServiceModel(entity);
-        }
-
-        public async Task Add(DoServiceModel model)
-        {
-            var entity = new Do
+            var newDo = new Do
             {
                 Title = model.Title,
-                Status = model.Status,
+                Description = model.Description,
+                Executors = model.Executors,
+                Status = DoStatus.Created,
+                Created = DateTime.Now,
                 Plan = model.Plan,
-                Fact = model.Fact
+                Fact = model.Fact,
+                SubTasks = model.SubTasks as ICollection<Do>,
+                Done = model.Done
             };
 
-            _context.ToDoes.Add(entity);
-            await _context.SaveChangesAsync();
+            Data.ToDoes.Create(newDo);
+            Data.Save();
         }
 
-        public async Task<DoServiceModel> Delete(int id)
+        public void UpdateDo(DoServiceModel model)
         {
-            var entity = _context.ToDoes
-                .Where(e => e.Id == id)
-                .First();
+            var toDo = Data.ToDoes.Get(model.Id);
 
-            if (entity != null)
-            {
-                _context.ToDoes.Remove(entity);
-                await _context.SaveChangesAsync();
-                return new DoServiceModel(entity);
-            }
-            else throw new NullReferenceException();
+            if (toDo == null)
+                throw new ValidationException("Задача не найдена");
+
+            Data.ToDoes.Update(toDo);
         }
 
-        public async Task<DoServiceModel> Update(DoServiceModel model)
+        public void DeleteDo(int id)
         {
-            AttachIfNot(model);
-            _context.Entry(model).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return model;
+            var toDo = Data.ToDoes.Get(id);
+
+            if (toDo == null)
+                throw new ValidationException("Задача не найдена");
+
+            if (toDo.SubTasks.Count > 0)
+                foreach (var item in toDo.SubTasks)
+                {
+                    Data.ToDoes.Delete(item.Id);
+                }
+
+            Data.ToDoes.Delete(toDo.Id);
         }
 
-        private void AttachIfNot(DoServiceModel model)
+        public IEnumerable<DoServiceModel> GetDoes()
         {
-            var entity = _context.ToDoes
-                .Where(e => e.Id == model.Id)
-                .First();
+            var subTasks = Data.ToDoes.GetAll()
+                .Select(x => x.SubTasks).SelectMany(x => x).ToList().Distinct();
 
-            if (!_context.ToDoes.Local.Contains(entity))
-            {
-                _context.ToDoes.Attach(entity);
-            }
+            var toDoes = Data.ToDoes.GetAll()
+                .Where(x => !subTasks.Any(sub => sub.Id == x.Id))
+                .Select(x => new DoServiceModel(x));
+
+            return toDoes;
         }
-        #endregion
+
+        public void ChangeDoStatus(int id, DoStatus status)
+        {
+            var toDo = Data.ToDoes.Get(id);
+
+            if (toDo == null)
+                throw new ValidationException("Задача не найдена");
+
+            if (!CompleteSubTasks(toDo))
+                throw new ValidationException("Одна из подзадач этой задачи не может быть завершена");
+            
+            toDo.Status = DoStatus.Done;
+        }
+
+        private bool CompleteSubTasks(Do entity)
+        {
+            foreach (var item in entity.SubTasks)
+                CompleteDo(item);
+
+            return true;
+        }
+
+        private void CompleteDo(Do entity)
+        {
+            if (entity.Status == DoStatus.Created)
+                throw new ValidationException("Задача не может быть завершена, так как не была в процессе выполнения");
+            else if (entity.Status == DoStatus.Paused)
+                throw new ValidationException("Задача не может быть завершена, так как ее выполнение было приостановлено");
+            else if (entity.Status == DoStatus.Processing)
+                entity.Status = DoStatus.Done;
+        }
+
+        public void Dispose()
+        {
+            Data.Dispose();
+        }
     }
 }

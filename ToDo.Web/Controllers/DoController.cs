@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Data;
+﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using ToDo.Services.Interfaces;
+using ToDo.Services.Models;
 using ToDo.Web.Models.Do;
 
 namespace ToDo.Web.Controllers
@@ -16,8 +16,7 @@ namespace ToDo.Web.Controllers
 
         public DoController(
             ILogger<DoController> logger,
-            IDoService toDoService,
-            IHtmlHelper htmlHelper
+            IDoService toDoService
             )
         {
             _logger = logger;
@@ -26,19 +25,34 @@ namespace ToDo.Web.Controllers
 
         public IActionResult Index()
         {
-            var subTasks = _toDoService.GetAll()
-                .Select(x => x.SubTasks).SelectMany(x => x).ToList().Distinct();
-
-            var model = _toDoService.GetAll()
-                .Where(x => !subTasks.Any(sub => sub.Id == x.Id))
-                .Select(x => new DoListingModel(x));
+            var model = _toDoService.GetDoes().Select(x => new DoListingModel(x));
 
             return View(model);
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> CreateNewToDo(DoServiceModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+
+        //        }
+        //        catch (Exception exception)
+        //        {
+
+        //            throw;
+        //        }
+        //    }
+        //    await _toDoService.Create(model);
+
+        //    return View(model);
+        //}
+
         public JsonResult GetDescription(string jsonInput)
         {
-            string description = _toDoService.GetById(int.Parse(jsonInput)).Description;
+            string description = _toDoService.GetDo(int.Parse(jsonInput)).Description;
 
             if (description != null)
             {
@@ -46,18 +60,6 @@ namespace ToDo.Web.Controllers
             }
             else
                 return Json("This task has no description");
-        }
-
-        public JsonResult ExpandItem(int id)
-        {
-            var item = _toDoService.GetById(id);
-
-            if (item != null && item.SubTasks != null)
-            {
-                return Json(item.SubTasks);
-            }
-
-            return Json("");
         }
     }
 }

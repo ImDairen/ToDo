@@ -15,19 +15,17 @@ namespace ToDo.Data.Models
 
         public string Executors { get; set; }
 
+        [Required]
         public DateTime Created { get; set; }
 
         [Required]
-        public ToDoStatus Status { get; set; }
+        public DoStatus Status { get; set; }
 
         public DateTime Done { get; set; }
 
-        [Required]
         public int Plan { get; set; }
 
-        [Required]
         public int Fact { get; set; }
-
 
         public virtual ICollection<Do> SubTasks { get; set; }
     }

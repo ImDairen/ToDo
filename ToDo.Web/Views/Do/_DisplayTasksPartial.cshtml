@@ -9,7 +9,7 @@
                 <li class="toDoItem">
                     <input class="toDoItemId" type="hidden" value="@item.Id" />
                     <i class="toDoArrow"></i>
-                    @item.Title
+                    <span class="toDoItemTitle">@item.Title</span>
                     @await Html.PartialAsync("_DisplaySubTasksPartial", item.SubTasks) 
                 </li>
             }
@@ -17,7 +17,7 @@
             {
                 <li class="toDoItem">
                     <input class="toDoItemId" type="hidden" value="@item.Id" />
-                    @item.Title
+                    <span class="toDoItemTitle">@item.Title</span>
                 </li>
             }
         }

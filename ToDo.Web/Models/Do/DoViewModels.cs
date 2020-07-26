@@ -8,8 +8,8 @@ namespace ToDo.Web.Models.Do
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public virtual IEnumerable<DoListingModel> SubTasks { get; set; }
-        
+        public virtual List<DoListingModel> SubTasks { get; set; }
+
 
         public DoListingModel(DoServiceModel model)
         {

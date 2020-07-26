@@ -22,7 +22,7 @@ namespace ToDo.Services.Models
         public DateTime Created { get; set; }
 
         [Required]
-        public ToDoStatus Status { get; set; }
+        public DoStatus Status { get; set; }
 
         public DateTime Done { get; set; }
 
@@ -65,7 +65,7 @@ namespace ToDo.Services.Models
         }
 
 
-        public virtual IEnumerable<DoServiceModel> SubTasks { get; set; }
+        public virtual List<DoServiceModel> SubTasks { get; set; }
 
         public DoServiceModel(Do entity)
         {

@@ -18,7 +18,7 @@
 @section Scripts {
     <script type="text/javascript">
 
-        var toDoItems = document.getElementsByClassName("toDoItem")
+        var toDoItems = document.getElementsByClassName("toDoItemTitle")
         Array.from(toDoItems).forEach(toDo => toDo.addEventListener("click", async function ajaxDescription() {
             jsonInput = toDo.parentElement.querySelector(".toDoItemId").getAttribute("value")
             $.ajax({

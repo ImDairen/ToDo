@@ -1,6 +1,6 @@
 ﻿namespace ToDo.Data.Models.Static
 {
-    public enum ToDoStatus
+    public enum DoStatus
     {
         Created,
         Processing,

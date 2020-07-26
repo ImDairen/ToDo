@@ -6,17 +6,17 @@
         {
             @if (item.SubTasks.Count() > 0)
             {
-                <li class="toDoItemSubTask">
-                    <input class="toDoSubTaskId" type="hidden" value="@item.Id" />
+                <li class="toDoItem">
+                    <input class="toDoItemId" type="hidden" value="@item.Id" />
                     <i class="toDoArrow"></i>
-                    @item.Title
+                    <span class="toDoItemTitle">@item.Title</span>
                 </li>
             }
             else
             {
-                <li class="toDoItemSubTask">
-                    <input class="toDoSubTaskId" type="hidden" value="@item.Id" />
-                    @item.Title
+                <li class="toDoItem">
+                    <input class="toDoItemId" type="hidden" value="@item.Id" />
+                    <span class="toDoItemTitle">@item.Title</span>
                 </li>
             }
         }

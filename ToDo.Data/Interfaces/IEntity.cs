@@ -2,9 +2,8 @@
 
 namespace ToDo.Data.Interfaces
 {
-    public interface IEntity<TKey>
+    public interface IEntity
     {
-        [Key]
-        public int Id { get; set; }
+        int Id { get; set; }
     }
 }

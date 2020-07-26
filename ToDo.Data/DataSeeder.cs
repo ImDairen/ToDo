@@ -25,7 +25,7 @@ namespace ToDo.Data
             {
                 Title = "First Task",
                 Description = "This is First Task",
-                Status = ToDoStatus.Created,
+                Status = DoStatus.Created,
                 Executors = "Kalinin",
                 Created = DateTime.Now,
                 Done = DateTime.Now,
@@ -37,7 +37,7 @@ namespace ToDo.Data
             {
                 Title = "Second Task",
                 Description = "This is Second Task",
-                Status = ToDoStatus.Created,
+                Status = DoStatus.Created,
                 Executors = "Someone",
                 Created = DateTime.Now,
                 Done = DateTime.Now,

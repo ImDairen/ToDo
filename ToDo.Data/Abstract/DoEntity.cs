@@ -1,11 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ToDo.Data.Interfaces;
-
+﻿
 namespace ToDo.Data.Abstract
 {
-    public class DoEntity : IDoEntity
+    public class DoEntity : Entity
     {
-        [Key]
-        public int Id { get; set; }
     }
 }

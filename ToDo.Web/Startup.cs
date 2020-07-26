@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ToDo.Data;
+using ToDo.Data.Interfaces;
+using ToDo.Data.Repositories;
 using ToDo.Services;
 using ToDo.Services.Interfaces;
 
@@ -29,6 +31,7 @@ namespace ToDo.Web
             services.AddTransient<DataSeeder>();
 
             services.AddScoped<IDoService, DoService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddRazorPages();
 
