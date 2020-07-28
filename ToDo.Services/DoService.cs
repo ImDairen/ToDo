@@ -38,10 +38,7 @@ namespace ToDo.Services
                 Executors = model.Executors,
                 Status = DoStatus.Created,
                 Created = DateTime.Now,
-                Plan = model.Plan,
-                Fact = model.Fact,
-                SubTasks = model.SubTasks as ICollection<Do>,
-                Done = model.Done
+                Plan = model.Plan
             };
 
             Data.ToDoes.Create(newDo);

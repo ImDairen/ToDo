@@ -7,7 +7,12 @@ namespace ToDo.Web.Helpers
 {
     public static class HtmlHelpers
     {
-        public static string IsSelected(this IHtmlHelper htmlHelper, string controllers, string actions, string cssClass = "nav active")
+        public static string IsSelected(
+            this IHtmlHelper htmlHelper,
+            string controllers,
+            string actions,
+            string cssClass = "nav active"
+            )
         {
             string currentAction = htmlHelper.ViewContext.RouteData.Values["action"] as string;
             string currentController = htmlHelper.ViewContext.RouteData.Values["controller"] as string;
@@ -18,5 +23,7 @@ namespace ToDo.Web.Helpers
             return acceptedActions.Contains(currentAction) && acceptedControllers.Contains(currentController) ?
                 cssClass : String.Empty;
         }
+
+
     }
 }

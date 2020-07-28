@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Logging;
 using ToDo.Services.Interfaces;
 using ToDo.Services.Models;
@@ -12,54 +14,138 @@ namespace ToDo.Web.Controllers
     public class DoController : Controller
     {
         private readonly ILogger<DoController> _logger;
-        private readonly IDoService _toDoService;
+        private readonly IDoService _doService;
 
         public DoController(
             ILogger<DoController> logger,
-            IDoService toDoService
+            IDoService doService
             )
         {
             _logger = logger;
-            _toDoService = toDoService;
+            _doService = doService;
         }
 
         public IActionResult Index()
         {
-            var model = _toDoService.GetDoes().Select(x => new DoListingModel(x));
+            var model = _doService.GetDoes()
+                .Select(x => new DoListingViewModel(x));
 
             return View(model);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> CreateNewToDo(DoServiceModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-
-        //        }
-        //        catch (Exception exception)
-        //        {
-
-        //            throw;
-        //        }
-        //    }
-        //    await _toDoService.Create(model);
-
-        //    return View(model);
-        //}
-
-        public JsonResult GetDescription(string jsonInput)
+        public ViewResult Create()
         {
-            string description = _toDoService.GetDo(int.Parse(jsonInput)).Description;
+            return View(new DoCreateViewModel());
+        }
 
-            if (description != null)
+        [HttpPost]
+        public IActionResult Create(
+            [Bind("Title, Description, Executors, Plan")] DoCreateViewModel model
+            )
+        {
+            if (ModelState.IsValid)
             {
-                return Json(description);
+                var newDo = new DoServiceModel
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    Executors = model.Executors,
+                    Plan = model.Plan
+                };
+
+                _doService.CreateDo(newDo);
+
+                TempData["Message"] = "Задача " + newDo.Title + " успешно создана!";
+
+                return RedirectToAction("Index");
+            }
+            
+            TempData["Message"] = "Задача " + model.Title + " не может быть создана!";
+
+            return RedirectToAction("Index");
+        }
+
+        public ViewResult Update(int id)
+        {
+            var toDo = _doService.GetDo(id);
+
+            if (toDo != null)
+            {
+                return View(toDo);
+            }
+
+            throw new NullReferenceException(message: "Задача не может быть изменена, так как не была найдена в БД");
+        }
+
+        [HttpPost]
+        public IActionResult Update(
+            [Bind("Id, Title, Description, Executors, Status, Done, Fact")] DoUpdateViewModel model
+            )
+        {
+            if (ModelState.IsValid)
+            {
+                var doForUpdate = _doService.GetDo(model.Id);
+
+                if (doForUpdate != null)
+                {
+                    var updatingDo = new DoServiceModel
+                    {
+                        Title = model.Title,
+                        Description = model.Description,
+                        Executors = model.Executors,
+                        Status = model.Status,
+                        Done = model.Done,
+                        Fact = model.Fact
+                    };
+
+                    _doService.UpdateDo(updatingDo);
+                    
+                    TempData["Message"] = "Задача " + model.Title + " успешно обновлена!";
+                }
+
+                return RedirectToAction("Index");
+            }
+
+            TempData["Message"] = "Задача " + model.Title + " не может быть обновлена";
+
+            return RedirectToAction("Index");
+        }
+
+        public ViewResult AddSubTasks(int id)
+        {
+            var toDo = _doService.GetDo(id);
+
+            if (toDo != null)
+            {
+                return View(toDo);
+            }
+
+            throw new NullReferenceException();
+        }
+
+        [HttpPost]
+        public IActionResult AddSubTasks(int id, List<DoServiceModel> subTasks)
+        {
+            var toDo = _doService.GetDo(id);
+
+            if (toDo != null)
+            {
+                toDo.SubTasks.AddRange(subTasks);
+            }
+
+            throw new NullReferenceException();
+        }
+
+        public PartialViewResult GetDescription(string jsonInput)
+        {
+            var model = new DoDescriptionViewModel(_doService.GetDo(int.Parse(jsonInput)));
+
+            if (model != null)
+            {
+                return PartialView("_DisplayTaskDescriptionPartial", model);
             }
             else
-                return Json("This task has no description");
+                throw new NullReferenceException();
         }
     }
 }

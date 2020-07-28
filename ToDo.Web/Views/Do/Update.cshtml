@@ -1,0 +1,42 @@
+﻿@model ToDo.Web.Models.Do.DoUpdateViewModel
+
+@{ 
+    ViewData["Title"] = "Редактирование " + Model.Title;
+}
+
+    <div class="updateRow">
+        <form asp-action="Update" method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+            <input type="hidden" value="@Model.Id" />
+            <div class="form-group">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" value="@Model.Title"/>
+                <span asp-validation-for="Title"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <input asp-for="Description" value="@Model.Description"/>
+                <span asp-validation-for="Description"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Executors"></label>
+                <input asp-for="Executors" value="@Model.Executors"/>
+                <span asp-validation-for="Executors"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status"></label>
+                <input asp-for="Status" value="@Model.Status"/>
+                <span asp-validation-for="Status"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Done"></label>
+                <input asp-for="Done" value="@Model.Done"/>
+                <span asp-validation-for="Done"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fact"></label>
+                <input asp-for="Fact" value="@Model.Fact"/>
+                <span asp-validation-for="Fact"></span>
+            </div>
+        </form>
+    </div>

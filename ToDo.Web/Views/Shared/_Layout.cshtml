@@ -14,16 +14,22 @@
 
     <div class="nav">
         <a class="@Html.IsSelected("Do", "Index")" asp-controller="Do" asp-action="Index">Главная</a>
-        <a href="#">Link</a>
+        <a class="@Html.IsSelected("Do", "Create")" asp-controller="Do" asp-action="Create">Создать задачу</a>
         <a href="#">Link</a>
     </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="created">@TempData["Message"]</div>
+    }
+
+    @RenderBody()
 
     <div class="footer">
         <p>Footer</p>
     </div>
 
 
-    @RenderBody()
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

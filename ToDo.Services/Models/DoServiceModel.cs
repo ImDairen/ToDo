@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using ToDo.Data.Models;
 using ToDo.Data.Models.Static;
@@ -9,10 +8,8 @@ namespace ToDo.Services.Models
 {
     public class DoServiceModel
     {
-        [Required]
         public int Id { get; set; }
 
-        [Required]
         public string Title { get; set; }
 
         public string Description { get; set; }
@@ -21,14 +18,12 @@ namespace ToDo.Services.Models
 
         public DateTime Created { get; set; }
 
-        [Required]
         public DoStatus Status { get; set; }
 
-        public DateTime Done { get; set; }
+        public DateTime? Done { get; set; }
 
         private int _plan { get; set; }
 
-        [Required]
         public int Plan
         {
             get
@@ -45,10 +40,9 @@ namespace ToDo.Services.Models
             }
         }
 
-        private int _fact { get; set; }
+        private int? _fact { get; set; }
 
-        [Required]
-        public int Fact
+        public int? Fact
         {
             get
             {
@@ -87,6 +81,11 @@ namespace ToDo.Services.Models
             {
                 SubTasks = new List<DoServiceModel>();
             }
+        }
+
+        public DoServiceModel()
+        {
+
         }
     }
 }

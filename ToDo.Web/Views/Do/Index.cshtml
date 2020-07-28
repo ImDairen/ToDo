@@ -1,17 +1,19 @@
-﻿@model IEnumerable<ToDo.Web.Models.Do.DoListingModel>
+﻿@model IEnumerable<ToDo.Web.Models.Do.DoListingViewModel>
 @using ToDo.Web.Helpers
 
 @{
     ViewData["Title"] = "Главная";
 }
 
-    <div class="column side">
-        @await Html.PartialAsync("_DisplayTasksPartial")
+    <div class="row">
+        <div class="column side">
+            @await Html.PartialAsync("_DisplayTasksPartial")
+        </div>
+        <div class="column middle"></div>
     </div>
     
-    <div class="column middle">
-        <p class="toDoItemDescription"></p>
-    </div>
+    
+    
 
 
 
@@ -24,17 +26,17 @@
             $.ajax({
                 type: "GET",
                 url: "Do/GetDescription",
-                dataType: "json",
+                dataType: "html",
                 data: {
                     jsonInput
                 },
                 success: function (data) {
-                    $('.toDoItemDescription').empty()
-                    $('.toDoItemDescription').append(data)
+                    $('.column.middle').empty()
+                    $('.column.middle').append(data)
                 }
             })
         }))
-
+        
         var toDoArrows = document.getElementsByClassName("toDoArrow")
         Array.from(toDoArrows).forEach(arrow => arrow.addEventListener("click", async function GetSubTasks() {
             arrow.parentElement.querySelector(".nested").classList.toggle("active")
@@ -45,5 +47,12 @@
                 arrow.classList.add("expand")
             }
         }))
+
+        //document.addEventListener('click', function (e) {
+        //    e = e || window.event;
+        //    var target = e.target || e.srcElement,
+        //        text = target.textContent || target.innerText;
+        //    alert(target)
+        //}, false);
     </script>
 }

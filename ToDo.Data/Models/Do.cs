@@ -21,11 +21,12 @@ namespace ToDo.Data.Models
         [Required]
         public DoStatus Status { get; set; }
 
-        public DateTime Done { get; set; }
+        public DateTime? Done { get; set; }
 
+        [Required]
         public int Plan { get; set; }
 
-        public int Fact { get; set; }
+        public int? Fact { get; set; }
 
         public virtual ICollection<Do> SubTasks { get; set; }
     }
