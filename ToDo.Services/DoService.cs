@@ -7,6 +7,7 @@ using ToDo.Services.Models;
 using System.Linq;
 using ToDo.Data.Models;
 using System;
+using System.Data;
 
 namespace ToDo.Services
 {
@@ -52,7 +53,31 @@ namespace ToDo.Services
             if (toDo == null)
                 throw new ValidationException("Задача не найдена");
 
+            if (toDo.Status != model.Status)
+            {
+                ChangeDoStatus(toDo.Id, model.Status);
+            }
+
+            toDo.Title = model.Title;
+            toDo.Description = model.Description;
+            toDo.Executors = model.Executors;
+            toDo.Plan = model.Plan;
+            toDo.Fact = model.Fact;
+            toDo.Done = model.Done;
+
             Data.ToDoes.Update(toDo);
+            Data.Save();
+        }
+
+        public void UpdateDo(int id)
+        {
+            var toDo = Data.ToDoes.Get(id);
+
+            if (toDo == null)
+                throw new ValidationException("Задача не найдена");
+
+            Data.ToDoes.Update(toDo);
+            Data.Save();
         }
 
         public void DeleteDo(int id)
@@ -69,6 +94,7 @@ namespace ToDo.Services
                 }
 
             Data.ToDoes.Delete(toDo.Id);
+            Data.Save();
         }
 
         public IEnumerable<DoServiceModel> GetDoes()
@@ -90,28 +116,88 @@ namespace ToDo.Services
             if (toDo == null)
                 throw new ValidationException("Задача не найдена");
 
-            if (!CompleteSubTasks(toDo))
-                throw new ValidationException("Одна из подзадач этой задачи не может быть завершена");
-            
-            toDo.Status = DoStatus.Done;
+            switch (status)
+            {
+                case DoStatus.Created:
+                    SetCreated(toDo);
+                    break;
+                case DoStatus.Processing:
+                    SetProcessing(toDo);
+                    break;
+                case DoStatus.Paused:
+                    SetPaused(toDo);
+                    break;
+                case DoStatus.Done:
+                    SetDone(toDo);
+                    break;
+            }
         }
 
-        private bool CompleteSubTasks(Do entity)
+        private void SetCreated(Do entity)
+        {
+            if (entity.Status != DoStatus.Created)
+            {
+                throw new ValidationException("Задача не может быть созданной второй раз");
+            }
+
+            entity.Status = DoStatus.Created;
+            Data.ToDoes.Update(entity);
+            Data.Save();
+        }
+
+        private void SetProcessing(Do entity)
+        {
+            if (entity.Status == DoStatus.Done)
+            {
+                throw new ValidationException("Выполненная задача не может выполняться заного");
+            }
+
+            entity.Status = DoStatus.Processing;
+            Data.ToDoes.Update(entity);
+            Data.Save();
+        }
+
+        private void SetPaused(Do entity)
+        {
+            if (entity.Status != DoStatus.Processing)
+            {
+                throw new ValidationException("Задача не может быть приостановлена, так как не было начато ее выполнение");
+            }
+
+            entity.Status = DoStatus.Paused;
+            Data.ToDoes.Update(entity);
+            Data.Save();
+        }
+
+        private void SetDone(Do entity)
+        {
+            if (entity.Status == DoStatus.Processing && CheckSubTasksCompleted(entity))
+            {
+                if (entity.Status == DoStatus.Created)
+                    throw new ValidationException("Задача не может быть завершена, так как не была в процессе выполнения");
+                else if (entity.Status == DoStatus.Paused)
+                    throw new ValidationException("Задача не может быть завершена, так как ее выполнение было приостановлено");
+                else if (entity.Status == DoStatus.Processing)
+                    entity.Status = DoStatus.Done;
+
+                Data.ToDoes.Update(entity);
+                Data.Save();
+            }
+            else
+                throw new ValidationException("Задача не может быть завершена, если она не в процессе выполнения или завершены не все подзадачи");
+        }
+
+        private bool CheckSubTasksCompleted(Do entity)
         {
             foreach (var item in entity.SubTasks)
-                CompleteDo(item);
+            {
+                if (item.Status != DoStatus.Done)
+                {
+                    return false;
+                }
+            }
 
             return true;
-        }
-
-        private void CompleteDo(Do entity)
-        {
-            if (entity.Status == DoStatus.Created)
-                throw new ValidationException("Задача не может быть завершена, так как не была в процессе выполнения");
-            else if (entity.Status == DoStatus.Paused)
-                throw new ValidationException("Задача не может быть завершена, так как ее выполнение было приостановлено");
-            else if (entity.Status == DoStatus.Processing)
-                entity.Status = DoStatus.Done;
         }
 
         public void Dispose()

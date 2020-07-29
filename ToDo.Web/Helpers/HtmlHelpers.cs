@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ToDo.Data.Models.Static;
 
 namespace ToDo.Web.Helpers
 {
@@ -24,6 +25,30 @@ namespace ToDo.Web.Helpers
                 cssClass : String.Empty;
         }
 
+        public static object PropertyValue(
+            this IHtmlHelper htmlHelper,
+            object value
+            )
+        {
+            object currentValue = htmlHelper.ViewContext.HttpContext.Items.Equals(value);
 
+            if (value is string && value != null)
+            {
+                return value;
+            }
+            else if (value is int && value != null)
+            {
+                return value;
+            }
+            else if (value is DateTime && value != null)
+            {
+                return DateTime.Now;
+            }
+            else if (value is DoStatus && value != null)
+            {
+                return value;
+            }
+            else return null;
+        }
     }
 }

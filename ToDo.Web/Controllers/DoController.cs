@@ -71,7 +71,7 @@ namespace ToDo.Web.Controllers
 
             if (toDo != null)
             {
-                return View(toDo);
+                return View(new DoUpdateViewModel(toDo));
             }
 
             throw new NullReferenceException(message: "Задача не может быть изменена, так как не была найдена в БД");
@@ -90,6 +90,7 @@ namespace ToDo.Web.Controllers
                 {
                     var updatingDo = new DoServiceModel
                     {
+                        Id = model.Id,
                         Title = model.Title,
                         Description = model.Description,
                         Executors = model.Executors,

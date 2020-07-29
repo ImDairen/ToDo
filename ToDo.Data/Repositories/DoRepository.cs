@@ -24,7 +24,7 @@ namespace ToDo.Data.Repositories
 
         public Do Get(int id)
         {
-            return _dbContext.ToDoes.Find(id);
+            return GetAll().First(x => x.Id == id);
         }
 
         public void Create(Do entity)

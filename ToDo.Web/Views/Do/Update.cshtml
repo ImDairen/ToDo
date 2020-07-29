@@ -1,42 +1,43 @@
 ﻿@model ToDo.Web.Models.Do.DoUpdateViewModel
+@using ToDo.Web.Helpers
 
-@{ 
+@{
     ViewData["Title"] = "Редактирование " + Model.Title;
 }
 
     <div class="updateRow">
-        <form asp-action="Update" method="post">
-            <div asp-validation-summary="ModelOnly"></div>
-            <input type="hidden" value="@Model.Id" />
-            <div class="form-group">
-                <label asp-for="Title"></label>
-                <input asp-for="Title" value="@Model.Title"/>
-                <span asp-validation-for="Title"></span>
+        @using (Html.BeginForm())
+        {
+            @Html.HiddenFor(m => m.Id)
+            <div>
+                @Html.LabelFor(m => m.Title)
+                @Html.EditorFor(m => m.Title)
             </div>
-            <div class="form-group">
-                <label asp-for="Description"></label>
-                <input asp-for="Description" value="@Model.Description"/>
-                <span asp-validation-for="Description"></span>
+            <div>
+                @Html.LabelFor(m => m.Description)
+                @Html.EditorFor(m => m.Description)
             </div>
-            <div class="form-group">
-                <label asp-for="Executors"></label>
-                <input asp-for="Executors" value="@Model.Executors"/>
-                <span asp-validation-for="Executors"></span>
+            <div>
+                @Html.LabelFor(m => m.Executors)
+                @Html.EditorFor(m => m.Executors)
             </div>
-            <div class="form-group">
-                <label asp-for="Status"></label>
-                <input asp-for="Status" value="@Model.Status"/>
-                <span asp-validation-for="Status"></span>
+            <div>
+                @Html.LabelFor(m => m.Status)
+                <select 
+                        asp-for="Status" 
+                        asp-items="Html.GetEnumSelectList<ToDo.Data.Models.Static.DoStatus>()">
+                </select>
             </div>
-            <div class="form-group">
-                <label asp-for="Done"></label>
-                <input asp-for="Done" value="@Model.Done"/>
-                <span asp-validation-for="Done"></span>
+            <div>
+                @Html.LabelFor(m => m.Done)
+                @Html.EditorFor(m => m.Done)
             </div>
-            <div class="form-group">
-                <label asp-for="Fact"></label>
-                <input asp-for="Fact" value="@Model.Fact"/>
-                <span asp-validation-for="Fact"></span>
+            <div>
+                @Html.LabelFor(m => m.Fact)
+                @Html.EditorFor(m => m.Fact)
             </div>
-        </form>
+            <div>
+                <input type="submit" value="Сохранить" />
+            </div>
+        }
     </div>
