@@ -2,7 +2,8 @@
 
     <p class="toDoItemDescription">@Model.Description</p>
     <div class="buttons">
+        <a class="details" asp-controller="Do" asp-action="Details" asp-route-id="@Model.Id">Подробнее</a>
         <a class="update" asp-controller="Do" asp-action="Update" asp-route-id="@Model.Id">Изменить</a>
         <a class="delete" asp-controller="Do" asp-action="Delete" asp-route-id="@Model.Id">Удалить</a>
-        <a class="addSubTasks" asp-controller="Do" asp-action="AddSubTasks" asp-route-id="@Model.Id">Добавить подзадачу</a>
+        <a class="addSubTasks" asp-controller="Do" asp-action="AddSubTask" asp-route-id="@Model.Id">Добавить подзадачу</a>
     </div>

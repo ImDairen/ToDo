@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ToDo.Data;
 using ToDo.Data.Interfaces;
-using ToDo.Data.Repositories;
 using ToDo.Services;
 using ToDo.Services.Interfaces;
 

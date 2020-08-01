@@ -1,0 +1,24 @@
+﻿@model ToDo.Web.Models.Do.DoDeleteViewModel
+
+@{ 
+    ViewData["Title"] = "Удалить задачу";
+}
+
+    <div class="detailsRow">
+        @Html.HiddenFor(m => m.Id)
+        <div>
+            @Html.DisplayFor(m => m.Title)
+        </div>
+        <div>
+            @Html.DisplayFor(m => m.Description)
+        </div>
+
+        <div>
+            <form asp-controller="Do" asp-action="Delete" method="post">
+                <input type="submit" class="delete" value="Удалить" />
+            </form>
+        </div>
+        <form asp-controller="Do" asp-action="Index">
+            <button class="back" type="submit">Назад</button>
+        </form>
+    </div>

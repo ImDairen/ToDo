@@ -1,0 +1,57 @@
+﻿@model ToDo.Web.Models.Do.DoDetailsViewModel
+
+    <div class="detailsRow">
+        @Html.HiddenFor(m => m.Id)
+        <div>
+            @Html.LabelFor(m => m.Title)
+            @Html.DisplayFor(m => m.Title)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Description)
+
+            @if (Model.Description != null)
+            {
+                @Html.DisplayFor(m => m.Description)
+            }
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Status)
+            @Html.DisplayFor(m => m.Status)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Executors)
+
+            @if (Model.Executors != null)
+            {
+                @Html.DisplayFor(m => m.Executors)
+            }
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Created)
+            @Html.DisplayFor(m => m.Created)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Done)
+
+            @if (Model.Done != null)
+            {
+                @Html.DisplayFor(m => m.Done)
+            }
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Plan)
+            @Html.DisplayFor(m => m.Plan)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Fact)
+
+            @if (Model.Fact != default(int))
+            {
+                @Html.DisplayFor(m => m.Fact)
+            }
+        </div>
+        <form asp-controller="Do" asp-action="Index">
+            <button class="back" type="submit">Назад</button>
+        </form>
+    </div>
+    

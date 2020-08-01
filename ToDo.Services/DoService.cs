@@ -20,9 +20,10 @@ namespace ToDo.Services
             Data = unitOfWork;
         }
 
+
         public DoServiceModel GetDo(int id)
         {
-            var item = Data.ToDoes.Get(id);
+            var item = Data.ToDoes.FindByIdAsync(id).Result;
 
             if (item == null)
                 throw new ValidationException("Задача не найдена");
@@ -30,25 +31,34 @@ namespace ToDo.Services
             return new DoServiceModel(item);
         }
 
-        public void CreateDo(DoServiceModel model)
+        public int? CreateDo(DoServiceModel model)
         {
-            var newDo = new Do
+            try
             {
-                Title = model.Title,
-                Description = model.Description,
-                Executors = model.Executors,
-                Status = DoStatus.Created,
-                Created = DateTime.Now,
-                Plan = model.Plan
-            };
+                var newDo = new Do
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    Executors = model.Executors,
+                    Status = DoStatus.Created,
+                    Created = DateTime.Now,
+                    Plan = model.Plan
+                };
 
-            Data.ToDoes.Create(newDo);
-            Data.Save();
+                Data.ToDoes.Insert(newDo);
+                Data.Save();
+                return newDo.Id;
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
+            
         }
 
         public void UpdateDo(DoServiceModel model)
         {
-            var toDo = Data.ToDoes.Get(model.Id);
+            var toDo = Data.ToDoes.FindByIdAsync(model.Id).Result;
 
             if (toDo == null)
                 throw new ValidationException("Задача не найдена");
@@ -65,16 +75,6 @@ namespace ToDo.Services
             toDo.Fact = model.Fact;
             toDo.Done = model.Done;
 
-            Data.ToDoes.Update(toDo);
-            Data.Save();
-        }
-
-        public void UpdateDo(int id)
-        {
-            var toDo = Data.ToDoes.Get(id);
-
-            if (toDo == null)
-                throw new ValidationException("Задача не найдена");
 
             Data.ToDoes.Update(toDo);
             Data.Save();
@@ -82,7 +82,7 @@ namespace ToDo.Services
 
         public void DeleteDo(int id)
         {
-            var toDo = Data.ToDoes.Get(id);
+            var toDo = Data.ToDoes.FindByIdAsync(id).Result;
 
             if (toDo == null)
                 throw new ValidationException("Задача не найдена");
@@ -99,19 +99,32 @@ namespace ToDo.Services
 
         public IEnumerable<DoServiceModel> GetDoes()
         {
-            var subTasks = Data.ToDoes.GetAll()
-                .Select(x => x.SubTasks).SelectMany(x => x).ToList().Distinct();
 
-            var toDoes = Data.ToDoes.GetAll()
-                .Where(x => !subTasks.Any(sub => sub.Id == x.Id))
+            var toDoes = Data.ToDoes
+                .GetAllAsync().Result
+                .Where(x => 
+                    !Data.ToDoes.GetAllAsync().Result
+                    .Select(x => x.SubTasks)
+                    .SelectMany(x => x)
+                    .Contains(x))
                 .Select(x => new DoServiceModel(x));
+
+            //var subTasks = Data.ToDoes.GetAll()
+            //    .Select(x => x.SubTasks)
+            //    .SelectMany(x => x)
+            //    .ToList()
+            //    .Distinct();
+
+            //var toDoes = Data.ToDoes.GetAll()
+            //    .Where(x => !subTasks.Any(sub => sub.Id == x.Id))
+            //    .Select(x => new DoServiceModel(x));
 
             return toDoes;
         }
 
         public void ChangeDoStatus(int id, DoStatus status)
         {
-            var toDo = Data.ToDoes.Get(id);
+            var toDo = Data.ToDoes.FindByIdAsync(id).Result;
 
             if (toDo == null)
                 throw new ValidationException("Задача не найдена");
@@ -198,11 +211,6 @@ namespace ToDo.Services
             }
 
             return true;
-        }
-
-        public void Dispose()
-        {
-            Data.Dispose();
         }
     }
 }

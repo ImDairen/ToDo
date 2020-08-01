@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -112,30 +113,96 @@ namespace ToDo.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ViewResult AddSubTasks(int id)
+        public IActionResult Details(int id)
+        {
+            var model = _doService.GetDo(id);
+
+            if (model != null)
+                return View(new DoDetailsViewModel(model));
+            else
+                return NotFound();
+        }
+
+        [HttpGet]
+        [ActionName("Delete")]
+        public IActionResult ConfirmDelete(int id)
         {
             var toDo = _doService.GetDo(id);
 
             if (toDo != null)
             {
-                return View(toDo);
+                return View(new DoDeleteViewModel(toDo));
             }
 
-            throw new NullReferenceException();
+            return NotFound();
         }
 
         [HttpPost]
-        public IActionResult AddSubTasks(int id, List<DoServiceModel> subTasks)
+        public IActionResult Delete(int id)
         {
             var toDo = _doService.GetDo(id);
 
             if (toDo != null)
             {
-                toDo.SubTasks.AddRange(subTasks);
+                _doService.DeleteDo(toDo.Id);
+
+                TempData["Message"] = "Задача " + toDo.Title + " была успешно удалена";
+
+                return RedirectToAction("Index");
+            }
+            else
+                return NotFound();
+        }
+
+        public ViewResult AddSubTask(int id)
+        {
+            var toDo = _doService.GetDo(id);
+
+            if (toDo == null)
+                throw new ValidationException("Терминальная задача не найдена");
+
+            ViewData["TerminalId"] = toDo.Id;
+            ViewData["TerminalTitle"] = toDo.Title;
+            
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddSubTask(int terminalId,
+            [Bind("Title, Description, Executors, Plan")] DoCreateViewModel model
+            )
+        {
+            var terminal = _doService.GetDo(terminalId);
+
+            if (terminal == null)
+                throw new ValidationException("Терминальная задача не найдена");
+
+            if (ModelState.IsValid)
+            {
+                var newDo = new DoServiceModel
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    Executors = model.Executors,
+                    Plan = model.Plan
+                };
+
+                _doService.CreateDo(newDo);
+
+                terminal.SubTasks.Add(newDo);
+                _doService.UpdateDo(terminal);
+
+                TempData["Message"] = "Подзадача " + newDo.Title + " успешно создана!";
+
+                return RedirectToAction("Index");
             }
 
-            throw new NullReferenceException();
+            TempData["Message"] = "Подзадача " + model.Title + " не может быть создана!";
+
+            return RedirectToAction("Index");
         }
+
+        
 
         public PartialViewResult GetDescription(string jsonInput)
         {

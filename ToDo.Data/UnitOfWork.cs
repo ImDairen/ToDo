@@ -6,7 +6,7 @@ using ToDo.Data.Repositories;
 
 namespace ToDo.Data
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly ApplicationDbContext _dbContext;
         private DoRepository _doRepository;

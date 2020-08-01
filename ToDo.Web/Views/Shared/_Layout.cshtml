@@ -15,7 +15,6 @@
     <div class="nav">
         <a class="@Html.IsSelected("Do", "Index")" asp-controller="Do" asp-action="Index">Главная</a>
         <a class="@Html.IsSelected("Do", "Create")" asp-controller="Do" asp-action="Create">Создать задачу</a>
-        <a href="#">Link</a>
     </div>
 
     @if (TempData["Message"] != null)

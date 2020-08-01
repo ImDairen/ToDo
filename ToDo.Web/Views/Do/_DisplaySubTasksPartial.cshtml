@@ -1,19 +1,20 @@
 ﻿@model IEnumerable<ToDo.Web.Models.Do.DoListingViewModel>
 
-    <ul class="toDoSubTasks nested">
+    <ul class="toDoItems nested">
         @foreach (var item in Model)
         {
-        <li class="toDoItem">
+            <li class="toDoItem">
             <input class="toDoItemId" type="hidden" value="@item.Id" />
             @if (item.SubTasks.Count() > 0)
             {
                 <i class="toDoArrow"></i>
                 <span class="toDoItemTitle">@item.Title</span>
+                @await Html.PartialAsync("_DisplaySubTasksPartial", item.SubTasks)
             }
             else
             {
                 <span class="toDoItemTitle noSubTasks">@item.Title</span>
             }
-        </li>
+            </li>
         }
     </ul>

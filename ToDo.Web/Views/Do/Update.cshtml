@@ -23,8 +23,7 @@
             </div>
             <div>
                 @Html.LabelFor(m => m.Status)
-                <select 
-                        asp-for="Status" 
+                <select asp-for="Status"
                         asp-items="Html.GetEnumSelectList<ToDo.Data.Models.Static.DoStatus>()">
                 </select>
             </div>
@@ -40,4 +39,7 @@
                 <input type="submit" value="Сохранить" />
             </div>
         }
+        <form asp-controller="Do" asp-action="Index">
+            <button class="back" type="submit">Назад</button>
+        </form>
     </div>

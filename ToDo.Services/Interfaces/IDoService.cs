@@ -7,11 +7,10 @@ namespace ToDo.Services.Interfaces
     public interface IDoService
     {
         DoServiceModel GetDo(int id);
-        void CreateDo(DoServiceModel model);
+        int? CreateDo(DoServiceModel model);
         void UpdateDo(DoServiceModel model);
         void DeleteDo(int id);
         IEnumerable<DoServiceModel> GetDoes();
         void ChangeDoStatus(int id, DoStatus status);
-        void Dispose();
     }
 }
