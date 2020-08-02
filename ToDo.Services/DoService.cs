@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using ToDo.Data.Interfaces;
 using ToDo.Data.Models.Static;
 using ToDo.Services.Interfaces;
@@ -8,6 +7,7 @@ using System.Linq;
 using ToDo.Data.Models;
 using System;
 using System.Data;
+using ToDo.Services.Infrastructure.Exceptions;
 
 namespace ToDo.Services
 {
@@ -26,7 +26,7 @@ namespace ToDo.Services
             var item = Data.ToDoes.FindByIdAsync(id).Result;
 
             if (item == null)
-                throw new ValidationException("Задача не найдена");
+                throw new NotFindException("GetDo");
 
             return new DoServiceModel(item);
         }
@@ -49,7 +49,7 @@ namespace ToDo.Services
                 Data.Save();
                 return newDo.Id;
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 return null;
             }
@@ -61,7 +61,7 @@ namespace ToDo.Services
             var toDo = Data.ToDoes.FindByIdAsync(model.Id).Result;
 
             if (toDo == null)
-                throw new ValidationException("Задача не найдена");
+                throw new NotFindException("UpdateDo");
 
             if (toDo.Status != model.Status)
             {
@@ -75,6 +75,13 @@ namespace ToDo.Services
             toDo.Fact = model.Fact;
             toDo.Done = model.Done;
 
+            var subIds = model.SubTasks.Select(x => x.Id);
+            var subs = Data.ToDoes.AsQueryable().Where(x => subIds.Contains(x.Id));
+
+            foreach (var item in subs)
+            {
+                toDo.SubTasks.Add(item);
+            }
 
             Data.ToDoes.Update(toDo);
             Data.Save();
@@ -85,7 +92,7 @@ namespace ToDo.Services
             var toDo = Data.ToDoes.FindByIdAsync(id).Result;
 
             if (toDo == null)
-                throw new ValidationException("Задача не найдена");
+                throw new NotFindException("DeleteDo");
 
             if (toDo.SubTasks.Count > 0)
                 foreach (var item in toDo.SubTasks)
@@ -127,7 +134,7 @@ namespace ToDo.Services
             var toDo = Data.ToDoes.FindByIdAsync(id).Result;
 
             if (toDo == null)
-                throw new ValidationException("Задача не найдена");
+                throw new NotFindException("ChangeDoStatus");
 
             switch (status)
             {
@@ -149,9 +156,7 @@ namespace ToDo.Services
         private void SetCreated(Do entity)
         {
             if (entity.Status != DoStatus.Created)
-            {
-                throw new ValidationException("Задача не может быть созданной второй раз");
-            }
+                throw new DoSetStatusException(DoStatus.Created, entity);
 
             entity.Status = DoStatus.Created;
             Data.ToDoes.Update(entity);
@@ -161,9 +166,7 @@ namespace ToDo.Services
         private void SetProcessing(Do entity)
         {
             if (entity.Status == DoStatus.Done)
-            {
-                throw new ValidationException("Выполненная задача не может выполняться заного");
-            }
+                throw new DoSetStatusException(DoStatus.Done, entity);
 
             entity.Status = DoStatus.Processing;
             Data.ToDoes.Update(entity);
@@ -174,7 +177,7 @@ namespace ToDo.Services
         {
             if (entity.Status != DoStatus.Processing)
             {
-                throw new ValidationException("Задача не может быть приостановлена, так как не было начато ее выполнение");
+                throw new DoSetStatusException(DoStatus.Processing, entity);
             }
 
             entity.Status = DoStatus.Paused;
@@ -187,9 +190,9 @@ namespace ToDo.Services
             if (entity.Status == DoStatus.Processing && CheckSubTasksCompleted(entity))
             {
                 if (entity.Status == DoStatus.Created)
-                    throw new ValidationException("Задача не может быть завершена, так как не была в процессе выполнения");
+                    throw new DoSetDoneException();
                 else if (entity.Status == DoStatus.Paused)
-                    throw new ValidationException("Задача не может быть завершена, так как ее выполнение было приостановлено");
+                    throw new DoSetDoneException();
                 else if (entity.Status == DoStatus.Processing)
                     entity.Status = DoStatus.Done;
 
@@ -197,7 +200,7 @@ namespace ToDo.Services
                 Data.Save();
             }
             else
-                throw new ValidationException("Задача не может быть завершена, если она не в процессе выполнения или завершены не все подзадачи");
+                throw new DoSetDoneException();
         }
 
         private bool CheckSubTasksCompleted(Do entity)

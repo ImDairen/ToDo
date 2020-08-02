@@ -8,17 +8,19 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Logging;
 using ToDo.Services.Interfaces;
 using ToDo.Services.Models;
+using ToDo.Web.Infrastructure.Logger;
 using ToDo.Web.Models.Do;
 
 namespace ToDo.Web.Controllers
 {
+    [SkipStatusCodePages]
     public class DoController : Controller
     {
-        private readonly ILogger<DoController> _logger;
+        private readonly ILoggerManager _logger;
         private readonly IDoService _doService;
 
         public DoController(
-            ILogger<DoController> logger,
+            ILoggerManager logger,
             IDoService doService
             )
         {
@@ -30,7 +32,7 @@ namespace ToDo.Web.Controllers
         {
             var model = _doService.GetDoes()
                 .Select(x => new DoListingViewModel(x));
-
+            
             return View(model);
         }
 
@@ -158,9 +160,6 @@ namespace ToDo.Web.Controllers
         {
             var toDo = _doService.GetDo(id);
 
-            if (toDo == null)
-                throw new ValidationException("Терминальная задача не найдена");
-
             ViewData["TerminalId"] = toDo.Id;
             ViewData["TerminalTitle"] = toDo.Title;
             
@@ -187,7 +186,7 @@ namespace ToDo.Web.Controllers
                     Plan = model.Plan
                 };
 
-                _doService.CreateDo(newDo);
+                newDo = _doService.GetDo(_doService.CreateDo(newDo).Value);
 
                 terminal.SubTasks.Add(newDo);
                 _doService.UpdateDo(terminal);
@@ -202,7 +201,7 @@ namespace ToDo.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        
+
 
         public PartialViewResult GetDescription(string jsonInput)
         {
