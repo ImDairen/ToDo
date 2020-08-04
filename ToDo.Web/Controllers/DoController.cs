@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using ToDo.Services.Infrastructure.Exceptions;
 using ToDo.Services.Interfaces;
 using ToDo.Services.Models;
 using ToDo.Web.Infrastructure.Logger;
@@ -18,14 +23,20 @@ namespace ToDo.Web.Controllers
     {
         private readonly ILoggerManager _logger;
         private readonly IDoService _doService;
+        private readonly IStringLocalizer<DoController> _localizer;
+        private readonly IStringLocalizer<SharedResource> _sharedLocalizer;
 
         public DoController(
             ILoggerManager logger,
-            IDoService doService
+            IDoService doService,
+            IStringLocalizer<DoController> localizer,
+            IStringLocalizer<SharedResource> sharedLocalizer
             )
         {
             _logger = logger;
             _doService = doService;
+            _localizer = localizer;
+            _sharedLocalizer = sharedLocalizer;
         }
 
         public IActionResult Index()
@@ -65,7 +76,7 @@ namespace ToDo.Web.Controllers
             
             TempData["Message"] = "Задача " + model.Title + " не может быть создана!";
 
-            return RedirectToAction("Index");
+            return View(model);
         }
 
         public ViewResult Update(int id)
@@ -201,7 +212,34 @@ namespace ToDo.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult ThrowException()
+        {
+            throw new DoSetDoneException();
+        }
 
+        public string GetCulture(string code="")
+        {
+            if (!String.IsNullOrEmpty(code))
+            {
+                CultureInfo.CurrentCulture = new CultureInfo(code);
+                CultureInfo.CurrentUICulture = new CultureInfo(code);
+            }
+
+            return $"CurrentCulture: { CultureInfo.CurrentCulture.Name}, CurrentUICulture: { CultureInfo.CurrentUICulture.Name}";
+            
+        }
+
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+
+            return LocalRedirect(returnUrl);
+        }
 
         public PartialViewResult GetDescription(string jsonInput)
         {

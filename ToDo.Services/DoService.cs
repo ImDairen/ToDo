@@ -75,13 +75,17 @@ namespace ToDo.Services
             toDo.Fact = model.Fact;
             toDo.Done = model.Done;
 
-            var subIds = model.SubTasks.Select(x => x.Id);
-            var subs = Data.ToDoes.AsQueryable().Where(x => subIds.Contains(x.Id));
-
-            foreach (var item in subs)
+            if (model.SubTasks != null)
             {
-                toDo.SubTasks.Add(item);
+                var subIds = model.SubTasks.Select(x => x.Id);
+                var subs = Data.ToDoes.AsQueryable().Where(x => subIds.Contains(x.Id));
+
+                foreach (var item in subs)
+                {
+                    toDo.SubTasks.Add(item);
+                }
             }
+            
 
             Data.ToDoes.Update(toDo);
             Data.Save();

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Web.Mvc;
 using ToDo.Data.Models.Static;
 using ToDo.Services.Models;
 
@@ -34,12 +36,20 @@ namespace ToDo.Web.Models.Do
 
     public class DoCreateViewModel
     {
+        [Required (ErrorMessage = "Необходимо ввести название")]
+        [StringLength(35, MinimumLength = 3, 
+            ErrorMessage = "Название должно содержать не менее 3 и не более 35 символов")]
+        [Display(Name = "Title")]
         public string Title { get; set; }
 
+        [Display(Name = "Description")]
         public string Description { get; set; }
 
+        [Display(Name = "Executors")]
         public string Executors { get; set; }
 
+        [Range (1,60, ErrorMessage = "Планируемое время должно находиться в промежутке от 1 до 60")]
+        [Display(Name = "Plan")]
         public int Plan { get; set; }
     }
 
@@ -47,19 +57,28 @@ namespace ToDo.Web.Models.Do
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Необходимо ввести название")]
+        [StringLength(35, MinimumLength = 3,
+            ErrorMessage = "Название должно содержать не менее 3 и не более 35 символов")]
+        [Display(Name = "Title")]
         public string Title { get; set; }
 
+        [Display(Name = "Description")]
         public string Description { get; set; }
 
+        [Display(Name = "Executors")]
         public string Executors { get; set; }
 
+        [Display(Name = "Status")]
         public DoStatus Status { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}",
-               ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", 
+            ApplyFormatInEditMode = true)]
+        [Display(Name = "Done")]
         public DateTime? Done { get; set; }
 
+        [Display(Name = "Fact")]
         public int? Fact { get; set; }
 
         public DoUpdateViewModel(DoServiceModel model)
@@ -96,26 +115,34 @@ namespace ToDo.Web.Models.Do
     {
         public int Id { get; set; }
 
+        [Display(Name = "Title")]
         public string Title { get; set; }
 
+        [Display(Name = "Description")]
         public string Description { get; set; }
 
+        [Display(Name = "Executors")]
         public string Executors { get; set; }
 
+        [Display(Name = "Status")]
         public DoStatus Status { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}",
                ApplyFormatInEditMode = true)]
+        [Display(Name = "Created")]
         public DateTime Created { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}",
                ApplyFormatInEditMode = true)]
+        [Display(Name = "Done")]
         public DateTime? Done { get; set; }
 
+        [Display(Name = "Plan")]
         public int Plan { get; set; }
 
+        [Display(Name = "Fact")]
         public int? Fact { get; set; }
 
 
@@ -148,8 +175,10 @@ namespace ToDo.Web.Models.Do
     {
         public int Id { get; set; }
 
+        [Display(Name = "Title")]
         public string Title { get; set; }
 
+        [Display(Name = "Description")]
         public string Description { get; set; }
 
         public DoDeleteViewModel(DoServiceModel model)

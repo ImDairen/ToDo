@@ -1,18 +1,20 @@
 ﻿@model IEnumerable<ToDo.Web.Models.Do.DoListingViewModel>
+@*@{
+        ViewData["Title"] = "Главная";
+    }*@
 
-@{
-    ViewData["Title"] = "Главная";
-}
+<h1>@ViewData["Title"]</h1>
+<h2>@ViewData["Message"]</h2>
 
-    <div class="row">
-        <div class="column side">
-            @await Html.PartialAsync("_DisplayTasksPartial")
-        </div>
-        <div class="column middle"></div>
+<div class="row">
+    <div class="column side">
+        @await Html.PartialAsync("_DisplayTasksPartial")
     </div>
-    
-    
-    
+    <div class="column middle"></div>
+</div>
+
+
+
 
 
 
@@ -35,7 +37,7 @@
                 }
             })
         }))
-        
+
         var toDoArrows = document.getElementsByClassName("toDoArrow")
         Array.from(toDoArrows).forEach(arrow => arrow.addEventListener("click", async function GetSubTasks() {
             arrow.parentElement.querySelector(".nested").classList.toggle("active")
@@ -47,13 +49,13 @@
             }
         }))
 
-        
 
-        //document.addEventListener('click', function (e) {
-        //    e = e || window.event;
-        //    var target = e.target || e.srcElement,
-        //        text = target.textContent || target.innerText;
-        //    alert(target)
-        //}, false);
+
+            //document.addEventListener('click', function (e) {
+            //    e = e || window.event;
+            //    var target = e.target || e.srcElement,
+            //        text = target.textContent || target.innerText;
+            //    alert(target)
+            //}, false);
     </script>
 }

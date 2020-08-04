@@ -6,10 +6,6 @@ namespace ToDo.Services.Infrastructure.Exceptions
 {
     public class DoSetStatusException : Exception
     {
-        public DoSetStatusException()
-        {
-        }
-
         public DoSetStatusException(DoStatus status, Do entity)
             : base(String.Format("Attempt to appropriate " +
                 status.ToString()

@@ -5,41 +5,43 @@
     ViewData["Title"] = "Редактирование " + Model.Title;
 }
 
-    <div class="updateRow">
-        @using (Html.BeginForm())
-        {
-            @Html.HiddenFor(m => m.Id)
-            <div>
-                @Html.LabelFor(m => m.Title)
-                @Html.EditorFor(m => m.Title)
-            </div>
-            <div>
-                @Html.LabelFor(m => m.Description)
-                @Html.EditorFor(m => m.Description)
-            </div>
-            <div>
-                @Html.LabelFor(m => m.Executors)
-                @Html.EditorFor(m => m.Executors)
-            </div>
-            <div>
-                @Html.LabelFor(m => m.Status)
-                <select asp-for="Status"
-                        asp-items="Html.GetEnumSelectList<ToDo.Data.Models.Static.DoStatus>()">
-                </select>
-            </div>
-            <div>
-                @Html.LabelFor(m => m.Done)
-                @Html.EditorFor(m => m.Done)
-            </div>
-            <div>
-                @Html.LabelFor(m => m.Fact)
-                @Html.EditorFor(m => m.Fact)
-            </div>
-            <div>
-                <input type="submit" value="Сохранить" />
-            </div>
-        }
-        <form asp-controller="Do" asp-action="Index">
-            <button class="back" type="submit">Назад</button>
-        </form>
-    </div>
+<div class="updateRow">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.Id)
+        <div>
+            @Html.LabelFor(m => m.Title)
+            @Html.EditorFor(m => m.Title)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Description)
+            @Html.EditorFor(m => m.Description)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Executors)
+            @Html.EditorFor(m => m.Executors)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Status)
+            <select asp-for="Status"
+                    asp-items="Html.GetEnumSelectList<ToDo.Data.Models.Static.DoStatus>()">
+            </select>
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Done)
+            @Html.EditorFor(m => m.Done)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Fact)
+            @Html.EditorFor(m => m.Fact)
+        </div>
+        <div>
+            <input type="submit" value="Сохранить" />
+        </div>
+    }
+    <form asp-controller="Do" asp-action="Index">
+        <button class="back" type="submit">Назад</button>
+    </form>
+</div>
+
+@await Html.PartialAsync("_ValidationScriptsPartial")

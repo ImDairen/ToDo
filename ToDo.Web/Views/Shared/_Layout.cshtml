@@ -1,4 +1,8 @@
 ﻿@using ToDo.Web.Helpers
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,8 +17,8 @@
     <div class="heading-image"></div>
 
     <div class="nav">
-        <a class="@Html.IsSelected("Do", "Index")" asp-controller="Do" asp-action="Index">Главная</a>
-        <a class="@Html.IsSelected("Do", "Create")" asp-controller="Do" asp-action="Create">Создать задачу</a>
+        <a class="@Html.IsSelected("Do", "Index")" asp-controller="Do" asp-action="Index">@SharedLocalizer["Home"]</a>
+        <a class="@Html.IsSelected("Do", "Create")" asp-controller="Do" asp-action="Create">@SharedLocalizer["CreateToDo"]</a>
     </div>
 
     @if (TempData["Message"] != null)
