@@ -5,7 +5,7 @@
         @foreach (var item in Model)
         {
 
-        <li class="toDoItem">
+            <li class="toDoItem">
             <input class="toDoItemId" type="hidden" value="@item.Id" />
             @if (item.SubTasks.Count() > 0)
             {
@@ -17,6 +17,6 @@
             {
                 <span class="toDoItemTitle noSubTasks">@item.Title</span>
             }
-        </li>
+            </li>
         }
     </ul>

@@ -92,6 +92,7 @@
     display: block;
     cursor: pointer;
     font-size: xx-large;
+    padding: 3px 5px;
 }
 
 .toDoItemDescription {
@@ -100,8 +101,7 @@
 }
 
 .noSubTasks {
-    padding-left: 23px;
-    padding-top: 7px;
+    padding-left: 32px;
 }
 
 .nested {
@@ -134,6 +134,7 @@ ul {
 /*Buttons*/
 .buttons {
     display: block;
+    padding: 10px 0px;
 }
 
 .delete {
@@ -166,4 +167,162 @@ input[type="checkbox"].input-validation-error {
 
 .validation-summary-valid {
     display: none;
+}
+
+/*Edit*/
+
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px 10px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+input[type=number] {
+    width: 15%;
+    padding: 12px 20px 10px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+select {
+    width: 9%;
+    padding: 10px 20px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+input[type=date] {
+    width: 10%;
+    padding: 12px 20px 10px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    margin-right: 10px;
+    outline: none;
+}
+
+input[type=submit] {
+    width: 7%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    outline-color: lime;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+form {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+label {
+    margin-left: 10px;
+}
+
+.updateRow {
+    margin: 25px;
+}
+
+.back {
+    width: 5%;
+    background-color: grey;
+    color: white;
+    padding: 10px 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.details {
+    background-color: white;
+    color: black;
+    border: 2px solid grey;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.details:hover {
+    background-color: grey;
+    color: white;
+}
+
+.update {
+    background-color: white;
+    color: black;
+    border: 2px solid cornflowerblue;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.update:hover {
+    background-color: cornflowerblue;
+    color: white;
+}
+
+.delete {
+    background-color: white;
+    color: black;
+    border: 2px solid red;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.delete:hover {
+    background-color: red;
+    color: white;
+}
+
+.addSubTask {
+    background-color: white;
+    color: black;
+    border: 2px solid blue;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.addSubTask:hover {
+    background-color: blue;
+    color: white;
 }

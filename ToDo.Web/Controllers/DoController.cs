@@ -79,8 +79,10 @@ namespace ToDo.Web.Controllers
             return View(model);
         }
 
-        public ViewResult Update(int id)
+        public ViewResult Update(int id, string returnUrl)
         {
+            ViewData["ReturnUrl"] = returnUrl;
+
             var toDo = _doService.GetDo(id);
 
             if (toDo != null)

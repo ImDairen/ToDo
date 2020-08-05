@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using NLog;
 using System.Globalization;
 using System.IO;
@@ -33,19 +32,28 @@ namespace ToDo.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region Db
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+            #endregion
+
+            #region DI
 
             services.AddSingleton<ILoggerManager, LoggerManager>();
             services.AddTransient<IStringLocalizer, CustomStringLocalizer>();
             services.AddTransient<DataSeeder>();
             services.AddLocalization(options => options.ResourcesPath = "Resources");
-
             services.AddScoped<IDoService, DoService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            
+            #endregion
 
             services.AddRazorPages();
+
+            #region Localization
 
             services.AddControllersWithViews()
                 .AddDataAnnotationsLocalization()
@@ -63,10 +71,17 @@ namespace ToDo.Web
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });
+
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataSeeder dataSeeder, ILoggerManager logger)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            DataSeeder dataSeeder,
+            ILoggerManager logger
+            )
         {
             if (env.IsDevelopment())
             {
@@ -80,6 +95,7 @@ namespace ToDo.Web
             dataSeeder.Seed();
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();
