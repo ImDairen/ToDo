@@ -22,16 +22,17 @@ namespace ToDo.Services.Models
 
         public DateTime? Done { get; set; }
 
+
         private int _plan { get; set; }
 
         public int Plan
         {
             get
             {
-                if (SubTasks == null)
-                    return _plan;
-                else
+                if (SubTasks != null && SubTasks.Any())
                     return _plan + SubTasks.Sum(x => x.Plan);
+                else
+                    return _plan;
             }
 
             set
@@ -57,7 +58,6 @@ namespace ToDo.Services.Models
                 _fact = value;
             }
         }
-
 
         public virtual List<DoServiceModel> SubTasks { get; set; }
 

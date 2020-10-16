@@ -55,6 +55,19 @@
                     @Html.DisplayFor(m => m.Fact)
                 }
             </div>
+
+            @if (Model.SubTasks.Any())
+            {
+        <div class="form-group">
+            @foreach (var sub in Model.SubTasks)
+            {
+                <div>@sub.Title</div>
+                <div>@sub.Plan</div>
+            }
+        </div>
+            }
+            
+
             <button class="back" type="submit" asp-controller="Do" asp-action="Index">Назад</button>
         </form>
     </div>

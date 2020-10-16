@@ -111,7 +111,6 @@ namespace ToDo.Services
 
         public IEnumerable<DoServiceModel> GetDoes()
         {
-
             var toDoes = Data.ToDoes
                 .GetAllAsync().Result
                 .Where(x => 
@@ -128,7 +127,8 @@ namespace ToDo.Services
             //    .Distinct();
 
             //var toDoes = Data.ToDoes.GetAll()
-            //    .Where(x => !subTasks.Any(sub => sub.Id == x.Id))
+            //    .Where(x => !subTasks
+            //        .Any(sub => sub.Id == x.Id))
             //    .Select(x => new DoServiceModel(x));
 
             return toDoes;

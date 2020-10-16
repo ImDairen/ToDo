@@ -147,7 +147,7 @@ namespace ToDo.Web.Models.Do
 
         [Display(Name = "Fact")]
         public int? Fact { get; set; }
-
+        
 
         public List<DoDetailsViewModel> SubTasks { get; set; }
 
