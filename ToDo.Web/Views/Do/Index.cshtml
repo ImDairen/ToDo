@@ -1,11 +1,10 @@
 ﻿@model IEnumerable<ToDo.Web.Models.Do.DoListingViewModel>
 
-
 @{
     ViewData["Title"] = "Главная";
 }
 
-<div class="row">
+<div id="content">
     <div class="column side">
         @await Html.PartialAsync("_DisplayTasksPartial")
     </div>

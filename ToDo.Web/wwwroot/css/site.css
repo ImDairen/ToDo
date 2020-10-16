@@ -1,8 +1,6 @@
 ﻿/*Heading*/
-.header {
-    background-color: #F1F1F1;
-    text-align: center;
-    padding: 20px;
+#header {
+    display: block;
 }
 
 .heading-image {
@@ -12,15 +10,6 @@
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
-}
-
-.heading-text {
-    text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
 }
 
 /*Navbar*/
@@ -34,12 +23,13 @@
     display: block;
     color: #f2f2f2;
     text-align: center;
-    padding: 14px 16px;
+    padding: 15px 20px;
     text-decoration: none;
+    font-size: 20px;
 }
 
 .nav a:hover {
-    background-color: #ddd;
+    background-color: #dddd;
     color: black;
 }
 
@@ -49,20 +39,24 @@
 }
 
 /*Content*/
-.row {
+#content {
     display: flex;
 }
 
 .column {
-    padding-top: 3%;
+    margin-top: 3%;
 }
 
 .column.side {
     width: 25%;
+    height: 100%;
+    border-right: 2px solid black;
 }
 
 .column.middle {
-    width: 75%;
+    width: auto;
+    height: 15%;
+    margin-left: 30px;
 }
 
 .row:after {
@@ -75,16 +69,6 @@
     .column {
         width: 100%;
     }
-}
-
-/*Footer*/
-.footer {
-    position: fixed;
-    background-color: #f1f1f1;
-    text-align: center;
-    padding: 10px;
-    width: 100%;
-    bottom: 0;
 }
 
 /*To do list*/
@@ -137,130 +121,25 @@ ul {
     padding: 10px 0px;
 }
 
-.delete {
-}
-
 .buttons.nested {
     display: none;
 }
 
-/*Validation*/
-.field-validation-error {
-    color: #b94a48;
-}
-
-.field-validation-valid {
-    display: none;
-}
-
-input.input-validation-error {
-    border: 1px solid #b94a48;
-}
-
-input[type="checkbox"].input-validation-error {
-    border: 0 none;
-}
-
-.validation-summary-errors {
-    color: #b94a48;
-}
-
-.validation-summary-valid {
-    display: none;
-}
-
-/*Edit*/
-
-input[type=text] {
-    width: 100%;
-    padding: 12px 20px 10px;
-    margin: 8px 0;
-    display: block;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-}
-
-input[type=number] {
-    width: 15%;
-    padding: 12px 20px 10px;
-    margin: 8px 0;
-    display: block;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-}
-
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-select {
-    width: 9%;
-    padding: 10px 20px;
-    margin: 8px 0;
-    display: block;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-}
-
-input[type=date] {
-    width: 10%;
-    padding: 12px 20px 10px;
-    margin: 8px 0;
-    display: block;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-    margin-right: 10px;
-    outline: none;
-}
-
-input[type=submit] {
-    width: 7%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    outline-color: lime;
-}
-
-input[type=submit]:hover {
-    background-color: #45a049;
-}
-
-form {
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    padding: 20px;
-}
-
-label {
-    margin-left: 10px;
-}
-
-.updateRow {
-    margin: 25px;
-}
-
 .back {
-    width: 5%;
-    background-color: grey;
+    background-color: #333;
     color: white;
-    padding: 10px 10px;
-    margin: 8px 0;
+    padding: 11px 15px;
+    margin-top: 3%;
+    margin-left: 10px;
     border: none;
     border-radius: 10px;
+    outline: none;
     cursor: pointer;
+    font-size: 17px;
+}
+
+.back:hover {
+    background-color: grey;
 }
 
 .details {
@@ -325,4 +204,167 @@ label {
 .addSubTask:hover {
     background-color: blue;
     color: white;
+}
+
+/*Validation*/
+.field-validation-error {
+    color: #b94a48;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+/*Edit*/
+
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px 10px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+input[type=number] {
+    width: 15%;
+    padding: 12px 20px 10px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+select {
+    padding: 10px 20px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+input[type=date] {
+    padding: 12px 20px 10px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    margin-right: 10px;
+    outline: none;
+}
+
+input[type=submit] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    margin-right: 20px;
+    margin-left: 15px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    outline-color: lime;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+form {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+    margin-bottom: 5%;
+}
+
+label {
+    margin-left: 10px;
+}
+
+.updateForm {
+    margin-top: 3%;
+    font-size: 20px;
+}
+
+
+
+/*Create*/
+.createForm {
+    margin-top: 3%;
+    font-size: 20px;
+}
+
+.form-group input {
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    padding-top: 10px;
+}
+
+.form-group hidden {
+    display: none;
+}
+
+.form-group select {
+    font-size: 20px;
+}
+
+.message {
+    margin-top: 2%;
+    text-align: center;
+}
+
+.warning {
+    text-align: center;
+    margin-top: 2%;
+}
+
+/*Details*/
+.detailsForm {
+    margin-top: 3%;
+    font-size: 20px;
+}
+
+/*Footer*/
+#footer {
+    position: fixed;
+    background-color: #f1f1f1;
+    background-size: cover;
+    text-align: center;
+    bottom: 0;
+    left: 8px;
+    right: 8px;
 }

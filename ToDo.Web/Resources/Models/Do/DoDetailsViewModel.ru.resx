@@ -118,27 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Created" xml:space="preserve">
-    <value>Задача создана</value>
+    <value>Задача создана: </value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Описание</value>
+    <value>Описание: </value>
   </data>
   <data name="Done" xml:space="preserve">
-    <value>Задача выполнена</value>
+    <value>Задача выполнена: </value>
   </data>
   <data name="Executors" xml:space="preserve">
-    <value>Исполнители</value>
+    <value>Исполнители: </value>
   </data>
   <data name="Fact" xml:space="preserve">
-    <value>Фактическое время выполнения</value>
+    <value>Фактическое время выполнения: </value>
   </data>
   <data name="Plan" xml:space="preserve">
-    <value>Запланированное время выполнения</value>
+    <value>Запланированное время выполнения: </value>
   </data>
   <data name="Status" xml:space="preserve">
-    <value>Статус</value>
+    <value>Статус: </value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Название</value>
+    <value>Название: </value>
   </data>
 </root>

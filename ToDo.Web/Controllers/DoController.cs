@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -64,7 +65,7 @@ namespace ToDo.Web.Controllers
                     Title = model.Title,
                     Description = model.Description,
                     Executors = model.Executors,
-                    Plan = model.Plan
+                    Plan = int.Parse(model.Plan)
                 };
 
                 _doService.CreateDo(newDo);
@@ -79,10 +80,8 @@ namespace ToDo.Web.Controllers
             return View(model);
         }
 
-        public ViewResult Update(int id, string returnUrl)
+        public ViewResult Update(int id)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-
             var toDo = _doService.GetDo(id);
 
             if (toDo != null)
@@ -125,7 +124,7 @@ namespace ToDo.Web.Controllers
 
             TempData["Message"] = "Задача " + model.Title + " не может быть обновлена";
 
-            return RedirectToAction("Index");
+            return View(model);
         }
 
         public IActionResult Details(int id)
@@ -176,7 +175,7 @@ namespace ToDo.Web.Controllers
             ViewData["TerminalId"] = toDo.Id;
             ViewData["TerminalTitle"] = toDo.Title;
             
-            return View();
+            return View(new DoCreateViewModel());
         }
 
         [HttpPost]
@@ -196,7 +195,7 @@ namespace ToDo.Web.Controllers
                     Title = model.Title,
                     Description = model.Description,
                     Executors = model.Executors,
-                    Plan = model.Plan
+                    Plan = int.Parse(model.Plan)
                 };
 
                 newDo = _doService.GetDo(_doService.CreateDo(newDo).Value);

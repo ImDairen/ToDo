@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.ComponentModel;
 using System.Web.Mvc;
 using ToDo.Data.Models.Static;
 using ToDo.Services.Models;
@@ -36,21 +37,23 @@ namespace ToDo.Web.Models.Do
 
     public class DoCreateViewModel
     {
-        [Required (ErrorMessage = "Необходимо ввести название")]
-        [StringLength(35, MinimumLength = 3, 
-            ErrorMessage = "Название должно содержать не менее 3 и не более 35 символов")]
+        [Required(ErrorMessage = "Необходимо ввести название")]
+        [StringLength(125, MinimumLength = 3, 
+            ErrorMessage = "Название должно содержать не менее 3 и не более 125 символов")]
         [Display(Name = "Title")]
         public string Title { get; set; }
 
+        [StringLength(250, MinimumLength = 3,
+            ErrorMessage = "Описание должно содержать не менее 3 и не более 250 символов")]
         [Display(Name = "Description")]
         public string Description { get; set; }
 
         [Display(Name = "Executors")]
         public string Executors { get; set; }
 
-        [Range (1,60, ErrorMessage = "Планируемое время должно находиться в промежутке от 1 до 60")]
+        [Range(1,60, ErrorMessage = "Планируемое время должно находиться в промежутке от 1 до 60")]
         [Display(Name = "Plan")]
-        public int Plan { get; set; }
+        public string Plan { get; set; }
     }
 
     public class DoUpdateViewModel

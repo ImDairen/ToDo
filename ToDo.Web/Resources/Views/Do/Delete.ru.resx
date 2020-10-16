@@ -117,28 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Created" xml:space="preserve">
-    <value>Created at: </value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description: </value>
-  </data>
-  <data name="Done" xml:space="preserve">
-    <value>Done at: </value>
-  </data>
-  <data name="Executors" xml:space="preserve">
-    <value>Executors: </value>
-  </data>
-  <data name="Fact" xml:space="preserve">
-    <value>Actual execution time: </value>
-  </data>
-  <data name="Plan" xml:space="preserve">
-    <value>Planned execution time: </value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status: </value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Title: </value>
+  <data name="Warning" xml:space="preserve">
+    <value>Вы уверены, что хотите удалить задачу </value>
   </data>
 </root>

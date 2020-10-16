@@ -5,41 +5,46 @@
     ViewData["Title"] = "Редактирование " + Model.Title;
 }
 
-    <div class="updateRow">
-        @using (Html.BeginForm())
-        {
-            @Html.HiddenFor(m => m.Id)
-            <div>
-                @Html.LabelFor(m => m.Title)
-                @Html.EditorFor(m => m.Title)
-            </div>
-            <div>
-                @Html.LabelFor(m => m.Description)
-                @Html.EditorFor(m => m.Description)
-            </div>
-            <div>
-                @Html.LabelFor(m => m.Executors)
-                @Html.EditorFor(m => m.Executors)
-            </div>
-            <div>
-                @Html.LabelFor(m => m.Status)
-                <select asp-for="Status"
-                        asp-items="Html.GetEnumSelectList<ToDo.Data.Models.Static.DoStatus>()">
-                </select>
-            </div>
-            <div>
-                @Html.LabelFor(m => m.Done)
-                @Html.EditorFor(m => m.Done)
-            </div>
-            <div>
-                @Html.LabelFor(m => m.Fact)
-                @Html.EditorFor(m => m.Fact)
-            </div>
-            <div>
-                <input type="submit" value="Сохранить" />
-            </div>
-            <button class="back" type="submit" asp-controller="Do" asp-action="Index">Назад</button>
-        }
-    </div>
+<div class="updateForm">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-@await Html.PartialAsync("_ValidationScriptsPartial")
+        @Html.HiddenFor(m => m.Id)
+        <div class="form-group">
+            @Html.LabelFor(m => m.Title)
+            @Html.EditorFor(m => m.Title)
+            @Html.ValidationMessageFor(m => m.Title)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Description)
+            @Html.EditorFor(m => m.Description)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Executors)
+            @Html.EditorFor(m => m.Executors)
+        </div>
+        <div class="form-group select">
+            @Html.LabelFor(m => m.Status)
+            <select asp-for="Status"
+                    asp-items="Html.GetEnumSelectList<ToDo.Data.Models.Static.DoStatus>()">
+            </select>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Done)
+            @Html.EditorFor(m => m.Done)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Fact)
+            @Html.EditorFor(m => m.Fact)
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Сохранить" />
+            <button class="back cancel" type="submit" asp-controller="Do" asp-action="Index">Назад</button>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

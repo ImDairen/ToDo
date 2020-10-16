@@ -1,26 +1,30 @@
 ﻿@model ToDo.Web.Models.Do.DoDeleteViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Text
+ 
+@inject IViewLocalizer Localizer
 
-@{ 
-    ViewData["Title"] = "Удалить задачу";
+@{
+    ViewData["Title"] = "Удалить задачу " + Model.Title;
+    var sb = new StringBuilder();
 }
 
-    <div class="detailsRow">
+<h1 class="warning">@sb.Append(Localizer["Warning"].Value + Model.Title + "?")</h1>
+
+<div class="detailsForm">
+    <form asp-antiforgery="true" asp-action="Delete" method="post">
         @Html.HiddenFor(m => m.Id)
-        <div>
+        <div class="form-group">
             @Html.DisplayNameFor(m => m.Title)
             @Html.DisplayFor(m => m.Title)
         </div>
-        <div>
+        <div class="form-group">
             @Html.DisplayNameFor(m => m.Description)
             @Html.DisplayFor(m => m.Description)
         </div>
-
-        <div>
-            <form asp-controller="Do" asp-action="Delete" method="post">
-                <input type="submit" class="delete" value="Удалить" />
-            </form>
+        <div class="form-group">
+            <input type="submit" value="Удалить" style="background-color: red;" onmouseover="this.style.backgroundColor='#FA8072'" onmouseout="this.style.backgroundColor='red'" />
+            <button class="back" type="submit" asp-controller="Do" asp-action="Index">Назад</button>
         </div>
-        <form asp-controller="Do" asp-action="Index">
-            <button class="back" type="submit">Назад</button>
-        </form>
-    </div>
+    </form>
+</div>

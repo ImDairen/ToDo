@@ -12,24 +12,26 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
+    <div id="header">
+        <div class="heading-image"></div>
 
-    <div class="heading-image"></div>
+        <div class="nav">
+            <a class="@Html.IsSelected("Do", "Index")" asp-controller="Do" asp-action="Index">@SharedLocalizer["Home"]</a>
+            <a class="@Html.IsSelected("Do", "Create")" asp-controller="Do" asp-action="Create">@SharedLocalizer["CreateToDo"]</a>
+        </div>
 
-    <div class="nav">
-        <a class="@Html.IsSelected("Do", "Index")" asp-controller="Do" asp-action="Index">@SharedLocalizer["Home"]</a>
-        <a class="@Html.IsSelected("Do", "Create")" asp-controller="Do" asp-action="Create">@SharedLocalizer["CreateToDo"]</a>
+        @if (TempData["Message"] != null)
+        {
+            <h2 class="message">@TempData["Message"]</h2>
+        }
     </div>
-
-    @if (TempData["Message"] != null)
-    {
-        <div class="created">@TempData["Message"]</div>
-    }
 
     @RenderBody()
 
-    <div class="footer">
-        <p>Footer</p>
-    </div>
+
+    <footer id="footer">
+        <p>&copy; localhost, 2020, Калинин К.А., Телефон: +79130435194</p>
+    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
