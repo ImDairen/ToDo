@@ -99,11 +99,11 @@ namespace ToDo.Services
             if (toDo == null)
                 throw new NotFindException("DeleteDo");
 
-            if (toDo.SubTasks.Count > 0)
-                foreach (var item in toDo.SubTasks)
-                {
-                    Data.ToDoes.Delete(item.Id);
-                }
+            if (toDo.SubTasks != null && toDo.SubTasks.Any())
+            {
+                toDo.SubTasks = null;
+                Data.ToDoes.Update(toDo);
+            }
 
             Data.ToDoes.Delete(toDo.Id);
             Data.Save();

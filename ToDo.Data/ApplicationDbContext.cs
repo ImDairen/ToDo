@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using ToDo.Data.Models;
 
 namespace ToDo.Data
@@ -11,15 +12,5 @@ namespace ToDo.Data
         }
 
         public DbSet<Do> ToDoes { get; set; }
-
-        //protected override void OnModelCreating(ModelBuilder builder)
-        //{
-        //    builder.Entity<Do>(e =>
-        //    {
-        //        e.ToTable("ToDoes");
-        //        e.Property(e => e.Id).HasColumnName("DoId");
-        //        e.HasOne<Do>().WithOne().HasForeignKey<Do>(e => e.Id);
-        //    });
-        //}
     }
 }

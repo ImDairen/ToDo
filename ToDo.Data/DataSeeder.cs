@@ -16,7 +16,6 @@ namespace ToDo.Data
             _context = context;
         }
 
-
         public Task Seed()
         {
             if (_context.ToDoes.Count() != 0)

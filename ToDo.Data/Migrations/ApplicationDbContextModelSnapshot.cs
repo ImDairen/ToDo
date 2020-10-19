@@ -22,9 +22,8 @@ namespace ToDo.Data.Migrations
             modelBuilder.Entity("ToDo.Data.Models.Do", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("DoId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -33,6 +32,7 @@ namespace ToDo.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("DoId")
+                        .HasColumnName("DoId1")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("Done")
@@ -66,6 +66,12 @@ namespace ToDo.Data.Migrations
                     b.HasOne("ToDo.Data.Models.Do", null)
                         .WithMany("SubTasks")
                         .HasForeignKey("DoId");
+
+                    b.HasOne("ToDo.Data.Models.Do", null)
+                        .WithOne()
+                        .HasForeignKey("ToDo.Data.Models.Do", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

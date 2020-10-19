@@ -7,7 +7,6 @@ using ToDo.Data.Models.Static;
 
 namespace ToDo.Data.Models
 {
-    [Table("ToDoes")]
     public class Do : DoEntity
     {
         [Required]
