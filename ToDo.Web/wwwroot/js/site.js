@@ -25,10 +25,3 @@ Array.from(toDoArrows).forEach(arrow => arrow.addEventListener("click", async fu
         arrow.classList.add("expand")
     }
 }))
-
-//document.addEventListener('click', function (e) {
-//    e = e || window.event;
-//    var target = e.target || e.srcElement,
-//        text = target.textContent || target.innerText;
-//    alert(target)
-//}, false);

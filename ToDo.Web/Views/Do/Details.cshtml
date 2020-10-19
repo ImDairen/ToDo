@@ -32,7 +32,7 @@
                 }
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.Created)
+                @Html.LabelFor(m => m.Created) 
                 @Html.DisplayFor(m => m.Created)
             </div>
             <div class="form-group">
@@ -58,16 +58,14 @@
 
             @if (Model.SubTasks.Any())
             {
-        <div class="form-group">
-            @foreach (var sub in Model.SubTasks)
-            {
-                <div>@sub.Title</div>
-                <div>@sub.Plan</div>
+                <div class="form-group">
+                <p>Лист подзадач:</p>
+                @foreach (var sub in Model.SubTasks)
+                {
+                    <div class="subTask">@sub.Title - Запланированное полное время выполнения: @sub.Plan</div>
+                }
+                </div>
             }
-        </div>
-            }
-            
-
             <button class="back" type="submit" asp-controller="Do" asp-action="Index">Назад</button>
         </form>
     </div>

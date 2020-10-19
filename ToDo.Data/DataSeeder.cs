@@ -16,6 +16,7 @@ namespace ToDo.Data
             _context = context;
         }
 
+
         public Task Seed()
         {
             if (_context.ToDoes.Count() != 0)
@@ -28,9 +29,9 @@ namespace ToDo.Data
                 Status = DoStatus.Created,
                 Executors = "Kalinin",
                 Created = DateTime.Now,
-                Done = DateTime.Now,
+                Done = null,
                 Plan = 20,
-                Fact = 30
+                Fact = 10
             };
 
             var second = new Do
@@ -40,14 +41,28 @@ namespace ToDo.Data
                 Status = DoStatus.Created,
                 Executors = "Someone",
                 Created = DateTime.Now,
-                Done = DateTime.Now,
-                Plan = 20,
-                Fact = 30,
+                Done = null,
+                Plan = 40,
+                Fact = 0,
                 SubTasks = new List<Do> { first }
+            };
+
+            var third = new Do
+            {
+                Title = "Third Task",
+                Description = "This is Third Task",
+                Status = DoStatus.Done,
+                Executors = "Someone",
+                Created = DateTime.Now,
+                Done = DateTime.Now,
+                Plan = 12,
+                Fact = 10,
+                SubTasks = new List<Do> { second }
             };
 
             _context.ToDoes.Add(first);
             _context.ToDoes.Add(second);
+            _context.ToDoes.Add(third);
 
             _context.SaveChanges();
 

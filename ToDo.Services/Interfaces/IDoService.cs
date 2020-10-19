@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using ToDo.Data.Models.Static;
 using ToDo.Services.Models;
 
 namespace ToDo.Services.Interfaces
@@ -11,6 +10,5 @@ namespace ToDo.Services.Interfaces
         void UpdateDo(DoServiceModel model);
         void DeleteDo(int id);
         IEnumerable<DoServiceModel> GetDoes();
-        void ChangeDoStatus(int id, DoStatus status);
     }
 }

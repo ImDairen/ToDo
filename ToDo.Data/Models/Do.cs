@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using ToDo.Data.Abstract;
 using ToDo.Data.Models.Static;
 
 namespace ToDo.Data.Models
 {
+    [Table("ToDoes")]
     public class Do : DoEntity
     {
         [Required]

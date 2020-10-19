@@ -130,10 +130,10 @@
     <value>Исполнители: </value>
   </data>
   <data name="Fact" xml:space="preserve">
-    <value>Фактическое время выполнения: </value>
+    <value>Фактическое полное время выполнения: </value>
   </data>
   <data name="Plan" xml:space="preserve">
-    <value>Запланированное время выполнения: </value>
+    <value>Запланированное полное время выполнения: </value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>Статус: </value>

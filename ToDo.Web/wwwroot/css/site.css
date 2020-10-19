@@ -330,6 +330,10 @@ label {
     margin-bottom: 25px;
 }
 
+.form-group p {
+    margin-left: 10px;
+}
+
 .form-group {
     padding-top: 10px;
 }
@@ -356,6 +360,10 @@ label {
 .detailsForm {
     margin-top: 3%;
     font-size: 20px;
+}
+
+.subTask {
+    margin-left: 10px;
 }
 
 /*Footer*/

@@ -130,10 +130,10 @@
     <value>Executors: </value>
   </data>
   <data name="Fact" xml:space="preserve">
-    <value>Actual execution time: </value>
+    <value>Actual full execution time: </value>
   </data>
   <data name="Plan" xml:space="preserve">
-    <value>Planned execution time: </value>
+    <value>Planned full execution time: </value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>Status: </value>

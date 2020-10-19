@@ -1,10 +1,7 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.ComponentModel;
-using System.Web.Mvc;
 using ToDo.Data.Models.Static;
 using ToDo.Services.Models;
 
@@ -137,17 +134,46 @@ namespace ToDo.Web.Models.Do
         public DateTime Created { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}",
-               ApplyFormatInEditMode = true)]
         [Display(Name = "Done")]
         public DateTime? Done { get; set; }
 
+        private int _plan { get; set; }
+
         [Display(Name = "Plan")]
-        public int Plan { get; set; }
+        public int Plan
+        {
+            get
+            {
+                if (SubTasks != null && SubTasks.Any())
+                    return _plan + SubTasks.Sum(x => x.Plan);
+                else
+                    return _plan;
+            }
+
+            set
+            {
+                _plan = value;
+            }
+        }
+
+        private int? _fact { get; set; }
 
         [Display(Name = "Fact")]
-        public int? Fact { get; set; }
-        
+        public int? Fact
+        {
+            get
+            {
+                if (SubTasks != null && SubTasks.Any())
+                    return _fact + SubTasks.Sum(x => x.Fact);
+                else
+                    return _fact;
+            }
+
+            set
+            {
+                _fact = value;
+            }
+        }
 
         public List<DoDetailsViewModel> SubTasks { get; set; }
 

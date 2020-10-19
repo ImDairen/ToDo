@@ -63,10 +63,10 @@ namespace ToDo.Services
             if (toDo == null)
                 throw new NotFindException("UpdateDo");
 
-            if (toDo.Status != model.Status)
-            {
-                ChangeDoStatus(toDo.Id, model.Status);
-            }
+            if (model.Status == DoStatus.Done)
+                CompleteTerminalTask(toDo);
+            else
+                toDo.Status = model.Status;
 
             toDo.Title = model.Title;
             toDo.Description = model.Description;
@@ -120,6 +120,8 @@ namespace ToDo.Services
                     .Contains(x))
                 .Select(x => new DoServiceModel(x));
 
+            #region Another way
+
             //var subTasks = Data.ToDoes.GetAll()
             //    .Select(x => x.SubTasks)
             //    .SelectMany(x => x)
@@ -131,91 +133,32 @@ namespace ToDo.Services
             //        .Any(sub => sub.Id == x.Id))
             //    .Select(x => new DoServiceModel(x));
 
+            #endregion
+
             return toDoes;
         }
 
-        public void ChangeDoStatus(int id, DoStatus status)
+        private void CompleteTerminalTask(Do entity)
         {
-            var toDo = Data.ToDoes.FindByIdAsync(id).Result;
-
-            if (toDo == null)
-                throw new NotFindException("ChangeDoStatus");
-
-            switch (status)
+            if (CheckSubTasksCanBeCompleted(entity))
             {
-                case DoStatus.Created:
-                    SetCreated(toDo);
-                    break;
-                case DoStatus.Processing:
-                    SetProcessing(toDo);
-                    break;
-                case DoStatus.Paused:
-                    SetPaused(toDo);
-                    break;
-                case DoStatus.Done:
-                    SetDone(toDo);
-                    break;
+                ChangeSubTasksDoneStatus(entity);
+                entity.Status = DoStatus.Done;
             }
         }
 
-        private void SetCreated(Do entity)
+        private void ChangeSubTasksDoneStatus(Do entity)
         {
-            if (entity.Status != DoStatus.Created)
-                throw new DoSetStatusException(DoStatus.Created, entity);
-
-            entity.Status = DoStatus.Created;
-            Data.ToDoes.Update(entity);
-            Data.Save();
+            foreach (var sub in entity.SubTasks)
+                sub.Status = DoStatus.Done;
         }
 
-        private void SetProcessing(Do entity)
+        private bool CheckSubTasksCanBeCompleted(Do entity)
         {
-            if (entity.Status == DoStatus.Done)
-                throw new DoSetStatusException(DoStatus.Done, entity);
-
-            entity.Status = DoStatus.Processing;
-            Data.ToDoes.Update(entity);
-            Data.Save();
-        }
-
-        private void SetPaused(Do entity)
-        {
-            if (entity.Status != DoStatus.Processing)
+            foreach (var sub in entity.SubTasks)
             {
-                throw new DoSetStatusException(DoStatus.Processing, entity);
-            }
-
-            entity.Status = DoStatus.Paused;
-            Data.ToDoes.Update(entity);
-            Data.Save();
-        }
-
-        private void SetDone(Do entity)
-        {
-            if (entity.Status == DoStatus.Processing && CheckSubTasksCompleted(entity))
-            {
-                if (entity.Status == DoStatus.Created)
-                    throw new DoSetDoneException();
-                else if (entity.Status == DoStatus.Paused)
-                    throw new DoSetDoneException();
-                else if (entity.Status == DoStatus.Processing)
-                    entity.Status = DoStatus.Done;
-
-                Data.ToDoes.Update(entity);
-                Data.Save();
-            }
-            else
-                throw new DoSetDoneException();
-        }
-
-        private bool CheckSubTasksCompleted(Do entity)
-        {
-            foreach (var item in entity.SubTasks)
-            {
-                if (item.Status != DoStatus.Done)
-                {
+                if (sub.Status != DoStatus.Done && sub.Status != DoStatus.Processing)
                     return false;
-                }
             }
 
             return true;

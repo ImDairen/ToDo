@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ToDo.Data.Models.Static;
+using ToDo.Web.Models.Do;
 
 namespace ToDo.Web.Helpers
 {
@@ -25,30 +26,35 @@ namespace ToDo.Web.Helpers
                 cssClass : String.Empty;
         }
 
-        public static object PropertyValue(
+        public static IEnumerable<SelectListItem> updateModelSelectListItem(
             this IHtmlHelper htmlHelper,
-            object value
-            )
+            DoUpdateViewModel model)
         {
-            object currentValue = htmlHelper.ViewContext.HttpContext.Items.Equals(value);
+            var statusList = new List<SelectListItem>();
 
-            if (value is string && value != null)
+            switch (model.Status)
             {
-                return value;
+                case DoStatus.Created:
+                    statusList.Add(new SelectListItem { Text = DoStatus.Created.ToString()});
+                    statusList.Add(new SelectListItem { Text = DoStatus.Processing.ToString() });
+                    break;
+                case DoStatus.Processing:
+                    statusList.Add(new SelectListItem { Text = DoStatus.Processing.ToString() });
+                    statusList.Add(new SelectListItem { Text = DoStatus.Paused.ToString() });
+                    statusList.Add(new SelectListItem { Text = DoStatus.Done.ToString() });
+                    break;
+                case DoStatus.Paused:
+                    statusList.Add(new SelectListItem { Text = DoStatus.Processing.ToString() });
+                    statusList.Add(new SelectListItem { Text = DoStatus.Paused.ToString() });
+                    break;
+                case DoStatus.Done:
+                    statusList.Add(new SelectListItem { Text = DoStatus.Done.ToString() });
+                    break;
+                default:
+                    break;
             }
-            else if (value is int && value != null)
-            {
-                return value;
-            }
-            else if (value is DateTime && value != null)
-            {
-                return DateTime.Now;
-            }
-            else if (value is DoStatus && value != null)
-            {
-                return value;
-            }
-            else return null;
+
+            return statusList;
         }
     }
 }
